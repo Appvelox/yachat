@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="MessageContainer">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:maxWidth">250dp</item>
+        <item name="android:layout_marginRight">10dp</item>
+        <item name="android:layout_marginLeft">10dp</item>
+        <item name="android:layout_marginTop">24dp</item>
+        <item name="android:paddingTop">16dp</item>
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingRight">16dp</item>
+        <item name="android:paddingBottom">8dp</item>
+        <item name="layout_constraintWidth_max">wrap</item>
+    </style>
+
+    <style name="MessageBody">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="layout_constrainedWidth">true</item>
+        <item name="android:layout_marginBottom">8dp</item>
+        <item name="android:maxWidth">280dp</item>
+        <item name="android:text">Something hairy, Something, adoble but, in other </item>
+        <item name="android:textSize">18dp</item>
+        <item name="layout_constraintHorizontal_bias">0</item>
+    </style>
+
+    <style name="Time">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:text">17:33</item>
+        <item name="android:layout_marginLeft">16dp</item>
+        <item name="layout_constraintHorizontal_bias">1</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@android:color/darker_gray</item>
+    </style>
+
+    <style name="Name">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@android:color/darker_gray</item>
+        <item name="android:gravity">end|center_vertical</item>
+        <item name="android:layout_marginBottom">8dp</item>
+    </style>
+
+    <style name="ReplyContainer">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:paddingTop">4dp</item>
+        <item name="android:paddingRight">16dp</item>
+        <item name="android:visibility">gone</item>
+    </style>
+</resources>
