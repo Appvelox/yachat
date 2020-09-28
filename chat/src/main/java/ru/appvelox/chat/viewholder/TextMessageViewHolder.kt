@@ -1,14 +1,21 @@
-package ru.appvelox.chat
+package ru.appvelox.chat.viewholder
 
 import android.view.View
-import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.avatar.view.*
 import kotlinx.android.synthetic.main.item_message.view.*
+import ru.appvelox.chat.ChatAppearance
+import ru.appvelox.chat.ChatView
+import ru.appvelox.chat.utils.CircularAvatar
+import ru.appvelox.chat.MessageType
 import ru.appvelox.chat.model.Message
 import ru.appvelox.chat.model.TextMessage
 
-class TextMessageViewHolder(view: View, appearance: ChatAppearance, dateFormatter: ChatView.DateFormatter) :
+class TextMessageViewHolder(
+    view: View,
+    appearance: ChatAppearance,
+    dateFormatter: ChatView.DateFormatter
+) :
     MessageViewHolder(view, appearance, dateFormatter) {
 
     init {
@@ -18,7 +25,7 @@ class TextMessageViewHolder(view: View, appearance: ChatAppearance, dateFormatte
     override fun bind(message: Message, showMessageDate: Boolean, messageType: MessageType?) {
         super.bind(message, showMessageDate, messageType)
 
-        val textMessage = this.message as TextMessage
+        val textMessage = message as TextMessage
 
         itemView.authorName.text = textMessage.getAuthor().getName()
         itemView.message.text = textMessage.getText()
@@ -32,22 +39,18 @@ class TextMessageViewHolder(view: View, appearance: ChatAppearance, dateFormatte
                 .into(it)
         }
 
-        if (showMessageDate)
-            itemView.dateContainer.visibility = View.VISIBLE
-        else
-            itemView.dateContainer.visibility = View.GONE
+        itemView.dateContainer.visibility = if (showMessageDate) View.VISIBLE else View.GONE
 
         val replyMessage = textMessage.getRepliedMessage()
-        if (replyMessage == null) {
-            if (itemView.replyContainer != null)
+
+        itemView.replyContainer?.let {
+            if (replyMessage == null) {
                 itemView.replyContainer.visibility = View.GONE
-        } else {
-            if (itemView.replyContainer != null) {
+            } else {
                 itemView.replyContainer.visibility = View.VISIBLE
                 itemView.replyAuthorName.text = replyMessage.getAuthor().getName()
                 itemView.replyMessage.text = replyMessage.getText()
             }
         }
-
     }
 }

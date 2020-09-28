@@ -1,4 +1,4 @@
-package ru.appvelox.chat
+package ru.appvelox.chat.common
 
 import android.view.View
 import android.view.ViewGroup
@@ -6,19 +6,12 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
-import ru.appvelox.chat.model.ImageMessage
-import ru.appvelox.chat.model.Message
+import ru.appvelox.chat.*
 import ru.appvelox.chat.model.TextMessage
+import ru.appvelox.chat.viewholder.MessageViewHolder
 
-class DefaultMessageAdapter(appearance: ChatAppearance, initTextMessages: List<TextMessage>? = null) :
+class CommonMessageAdapter(appearance: ChatAppearance, initTextMessages: List<TextMessage>? = null) :
     MessageAdapter(appearance, initTextMessages) {
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MessageViewHolder {
-        val viewHolder = super.onCreateViewHolder(parent, viewType)
-
-
-        return viewHolder
-    }
 
     override fun onBindViewHolder(holder: MessageViewHolder, position: Int) {
         super.onBindViewHolder(holder, position)
@@ -27,20 +20,19 @@ class DefaultMessageAdapter(appearance: ChatAppearance, initTextMessages: List<T
 
         applyStyle(holder.itemView, getItemViewType(position).toMessageType())
 
-//        if (selectedMessageList.contains(message))
-//            if (message.isIncoming())
-//                applyIncomingSelectedAppearance(holder.itemView)
-//            else
-//                applyOutgoingSelectedAppearance(holder.itemView)
-//        else
-//            if (message.isIncoming())
-//                applyIncomingAppearance(holder.itemView)
-//            else
-//                applyOutgoingAppearance(holder.itemView)
+        if (selectedMessageList.contains(message))
+            if (message.isIncoming())
+                applyIncomingSelectedAppearance(holder.itemView)
+            else
+                applyOutgoingSelectedAppearance(holder.itemView)
+        else
+            if (message.isIncoming())
+                applyIncomingAppearance(holder.itemView)
+            else
+                applyOutgoingAppearance(holder.itemView)
     }
 
-    fun applyStyle(view: View, messageType: MessageType) {
-
+    private fun applyStyle(view: View, messageType: MessageType) {
         applyCommonStyle(view)
 
         when (messageType) {
@@ -51,27 +43,27 @@ class DefaultMessageAdapter(appearance: ChatAppearance, initTextMessages: List<T
         }
     }
 
-    fun applyIncomingTextMessageAppearance(view: View) {
+    private fun applyIncomingTextMessageAppearance(view: View) {
         applyIncomingConstraints(view)
         applyIncomingAppearance(view)
         applyTextTimeStyle(view)
         applyReplyAuthorNameStyle(view)
     }
 
-    fun applyIncomingImageMessageAppearance(view: View) {
+    private fun applyIncomingImageMessageAppearance(view: View) {
         applyIncomingConstraints(view)
         applyIncomingAppearance(view)
         applyImageTimeStyle(view)
     }
 
-    fun applyOutgoingTextMessageAppearance(view: View) {
+    private fun applyOutgoingTextMessageAppearance(view: View) {
         applyOutgoingConstraints(view)
         applyOutgoingAppearance(view)
         applyTextTimeStyle(view)
         applyReplyAuthorNameStyle(view)
     }
 
-    fun applyOutgoingImageMessageAppearance(view: View) {
+    private fun applyOutgoingImageMessageAppearance(view: View) {
         applyOutgoingConstraints(view)
         applyOutgoingAppearance(view)
         applyImageTimeStyle(view)
@@ -202,5 +194,4 @@ class DefaultMessageAdapter(appearance: ChatAppearance, initTextMessages: List<T
         val messageContainer = view.findViewById<View>(R.id.messageContainer)
         messageContainer.background = appearance.getIncomingSelectedMessageBackground()
     }
-
 }

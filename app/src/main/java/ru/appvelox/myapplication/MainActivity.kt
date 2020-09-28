@@ -79,12 +79,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun sendMessage(){
-//        Log.d("mylog, ")
-
-//        if(message.text.toString().isEmpty())
-//            message.setText(MessageGenerator.generateMessageText())
-//        chatView.addMessage(MessageGenerator.generateMessage(false, message.text.toString()))
-//        message.setText(MessageGenerator.generateMessageText())
+        if(message.text.toString().isEmpty())
+            message.setText(MessageGenerator.generateMessageText())
+        chatView.addMessage(MessageGenerator.generateMessage(false, message.text.toString()))
+        message.setText(MessageGenerator.generateMessageText())
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

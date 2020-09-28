@@ -1,16 +1,11 @@
-package ru.appvelox.chat
+package ru.appvelox.chat.utils
 
 import android.graphics.*
 import com.squareup.picasso.Transformation
-import android.R.attr.bitmap
-import android.graphics.RectF
-import android.graphics.Bitmap
-import android.graphics.BitmapShader
-
 
 class CircularAvatar : Transformation {
     override fun transform(source: Bitmap): Bitmap {
-        val size = Math.min(source.width, source.height)
+        val size = source.width.coerceAtMost(source.height)
 
         val x = (source.width - size) / 2
         val y = (source.height - size) / 2
@@ -43,32 +38,29 @@ class CircularAvatar : Transformation {
     }
 }
 
-
 class ImageTransformation(
-    val radius: Float,
-    val minWidth: Int,
-    val minHeight: Int,
-    val maxWidth: Int,
-    val maxHeight: Int
+    private val radius: Float,
+    private val minWidth: Int,
+    private val minHeight: Int,
+    private val maxWidth: Int,
+    private val maxHeight: Int
 ) : Transformation {
     override fun transform(source: Bitmap): Bitmap {
 
         val bitmapWidth = source.width
         val bitmapHeight = source.height
 
-        val resultWidth = if (bitmapWidth < minWidth)
-            minWidth
-        else if (bitmapWidth > maxWidth)
-            maxWidth
-        else
-            bitmapWidth
+        val resultWidth = when {
+            bitmapWidth < minWidth -> minWidth
+            bitmapWidth > maxWidth -> maxWidth
+            else -> bitmapWidth
+        }
 
-        val resultHeight = if (bitmapHeight < minHeight)
-            minHeight
-        else if (bitmapHeight > maxHeight)
-            maxHeight
-        else
-            bitmapHeight
+        val resultHeight = when {
+            bitmapHeight < minHeight -> minHeight
+            bitmapHeight > maxHeight -> maxHeight
+            else -> bitmapHeight
+        }
 
         val croppedBitmap = Bitmap.createBitmap(source, 0, 0, resultWidth, resultHeight)
 
@@ -88,7 +80,14 @@ class ImageTransformation(
 
         val frameThickness = 8
 
-        canvas.drawRoundRect(RectF(0f+frameThickness, 0f+frameThickness, width.toFloat() - frameThickness, height.toFloat() - frameThickness), radius, radius, paint)
+        canvas.drawRoundRect(
+            RectF(
+                0f + frameThickness,
+                0f + frameThickness,
+                width.toFloat() - frameThickness,
+                height.toFloat() - frameThickness
+            ), radius, radius, paint
+        )
 
         source.recycle()
         shaderBitmap.recycle()
@@ -114,11 +113,10 @@ class ImageTransformation(
 //    override fun key() = "outgoing_rounded"
 //}
 
-
 class RoundedImage(val radius: Float) : Transformation {
     override fun transform(source: Bitmap): Bitmap {
 
-        val size = Math.min(source.width, source.height)
+        val size = source.width.coerceAtMost(source.height)
 
         val x = (source.width - size) / 2
         val y = (source.height - size) / 2
@@ -137,11 +135,15 @@ class RoundedImage(val radius: Float) : Transformation {
         paint.isAntiAlias = true
 
         val r = 20f
-        canvas.drawRoundRect(RectF(0f, 0f, source.width.toFloat(), source.height.toFloat()), r, r, paint)
+        canvas.drawRoundRect(
+            RectF(0f, 0f, source.width.toFloat(), source.height.toFloat()),
+            r,
+            r,
+            paint
+        )
 
         squaredBitmap.recycle()
         return bitmap
-
     }
 
     override fun key(): String {

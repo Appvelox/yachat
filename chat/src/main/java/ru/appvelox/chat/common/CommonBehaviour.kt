@@ -1,6 +1,9 @@
-package ru.appvelox.chat
+package ru.appvelox.chat.common
 
-class DefaultBehaviour : Behaviour {
+import ru.appvelox.chat.Behaviour
+import ru.appvelox.chat.ChatView
+
+class CommonBehaviour : Behaviour {
     override var onMessageClickListener: ChatView.OnMessageClickListener? = null
     override var onMessageLongClickListener: ChatView.OnMessageLongClickListener? = null
     override var onAvatarClickListener: ChatView.OnAvatarClickListener? = null
