@@ -15,25 +15,26 @@ import ru.appvelox.chat.viewholder.TextMessageViewHolder
 
 open class MessageAdapter(
     val appearance: ChatAppearance,
+    val behaviour: ChatBehaviour,
     initTextMessages: List<TextMessage>? = null
 ) :
     RecyclerView.Adapter<MessageViewHolder>() {
 
-    var onReplyClickListener: ChatView.OnReplyClickListener? = null
+    var onReplyClickListener = behaviour.onReplyClickListener
 
-    var loadMoreListener: ChatView.LoadMoreListener? = null
+    var loadMoreListener = behaviour.loadMoreListener
 
     var currentUserId: Long? = null
 
     var oldDataLoading = false
 
-    var onItemClickListener: ChatView.OnMessageClickListener? = null
+    var onItemClickListener = behaviour.onMessageClickListener
         set(value) {
             notifyDataSetChanged()
             field = value
         }
 
-    var onItemLongClickListener: ChatView.OnMessageLongClickListener? = null
+    var onItemLongClickListener = behaviour.onMessageLongClickListener
         set(value) {
             notifyDataSetChanged()
             field = value
@@ -228,20 +229,20 @@ open class MessageAdapter(
         return messageList.indexOf(message)
     }
 
-    fun deleteMessage(textMessage: TextMessage) {
-        val position = messageList.indexOf(textMessage)
-        messageList.remove(textMessage)
+    fun deleteMessage(message: Message) {
+        val position = messageList.indexOf(message)
+        messageList.remove(message)
         notifyItemRemoved(position)
     }
 
-    fun updateMessage(textMessage: TextMessage) {
-        val index = messageList.indexOf(messageList.find { it.getId() == textMessage.getId() })
-        messageList[index] = textMessage
+    fun updateMessage(message: Message) {
+        val index = messageList.indexOf(messageList.find { it.getId() == message.getId() })
+        messageList[index] = message
         notifyItemChanged(index)
     }
 
-    fun addMessages(textMessages: MutableList<TextMessage>) {
-        messageList.addAll(textMessages)
+    fun addMessages(messages: MutableList<Message>) {
+        messageList.addAll(messages)
         notifyDataSetChanged()
     }
 }

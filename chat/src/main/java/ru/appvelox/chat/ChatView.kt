@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import ru.appvelox.chat.common.CommonAppearance
+import ru.appvelox.chat.common.CommonBehaviour
 import ru.appvelox.chat.common.CommonMessageAdapter
 import ru.appvelox.chat.model.Author
 import ru.appvelox.chat.model.Message
@@ -14,7 +15,7 @@ import java.util.*
 
 class ChatView(context: Context, attributeSet: AttributeSet) : RecyclerView(context, attributeSet) {
 
-    private var adapter: MessageAdapter = CommonMessageAdapter(CommonAppearance(context))
+    private var adapter: MessageAdapter = CommonMessageAdapter(CommonAppearance(context), CommonBehaviour())
 
     fun setOnItemClickListener(listener: OnMessageClickListener?) {
         adapter.onItemClickListener = listener
@@ -183,18 +184,19 @@ class ChatView(context: Context, attributeSet: AttributeSet) : RecyclerView(cont
         adapter.notifyDataSetChanged()
     }
 
-    fun addMessages(textMessages: MutableList<TextMessage>) {
-        adapter.addMessages(textMessages)
+    fun addMessages(messages: MutableList<Message>) {
+        adapter.addMessages(messages)
     }
 
     fun setLayout(incomingMessageLayout: Int?, outgoingMessageLayout: Int?) {
         val currentAppearance = adapter.appearance
+        val currentBehaviour = adapter.behaviour
         val oldAdapter = adapter
 
         adapter = if (incomingMessageLayout == null || outgoingMessageLayout == null)
-            CommonMessageAdapter(currentAppearance)
+            CommonMessageAdapter(currentAppearance, currentBehaviour)
         else
-            MessageAdapter(currentAppearance)
+            MessageAdapter(currentAppearance, currentBehaviour)
 
         oldAdapter.copyPropertiesTo(adapter)
 

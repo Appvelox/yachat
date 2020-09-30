@@ -10,8 +10,12 @@ import ru.appvelox.chat.*
 import ru.appvelox.chat.model.TextMessage
 import ru.appvelox.chat.viewholder.MessageViewHolder
 
-class CommonMessageAdapter(appearance: ChatAppearance, initTextMessages: List<TextMessage>? = null) :
-    MessageAdapter(appearance, initTextMessages) {
+class CommonMessageAdapter(
+    appearance: ChatAppearance,
+    behaviour: ChatBehaviour,
+    initTextMessages: List<TextMessage>? = null
+) :
+    MessageAdapter(appearance, behaviour, initTextMessages) {
 
     override fun onBindViewHolder(holder: MessageViewHolder, position: Int) {
         super.onBindViewHolder(holder, position)
@@ -75,8 +79,10 @@ class CommonMessageAdapter(appearance: ChatAppearance, initTextMessages: List<Te
         val authorName = view.findViewById<View>(R.id.authorName)
         val messageContainer = view.findViewById<View>(R.id.messageContainer)
 
-        avatarContainer.visibility = if (appearance.isOutgoingAvatarVisible) View.VISIBLE else View.GONE
-        authorName.visibility = if (appearance.isOutgoingAuthorNameVisible) View.VISIBLE else View.GONE
+        avatarContainer.visibility =
+            if (appearance.isOutgoingAvatarVisible) View.VISIBLE else View.GONE
+        authorName.visibility =
+            if (appearance.isOutgoingAuthorNameVisible) View.VISIBLE else View.GONE
         messageContainer.background = appearance.getOutgoingMessageBackground()
     }
 
@@ -86,8 +92,10 @@ class CommonMessageAdapter(appearance: ChatAppearance, initTextMessages: List<Te
         val authorName = view.findViewById<View>(R.id.authorName)
         val messageContainer = view.findViewById<View>(R.id.messageContainer)
 
-        avatarContainer.visibility = if (appearance.isIncomingAvatarVisible) View.VISIBLE else View.GONE
-        authorName.visibility = if (appearance.isIncomingAuthorNameVisible) View.VISIBLE else View.GONE
+        avatarContainer.visibility =
+            if (appearance.isIncomingAvatarVisible) View.VISIBLE else View.GONE
+        authorName.visibility =
+            if (appearance.isIncomingAuthorNameVisible) View.VISIBLE else View.GONE
         messageContainer.background = appearance.getIncomingMessageBackground()
     }
 
@@ -102,7 +110,8 @@ class CommonMessageAdapter(appearance: ChatAppearance, initTextMessages: List<Te
 
         val isRead = view.findViewById<ImageView>(R.id.isRead)
         val isSent = view.findViewById<ImageView>(R.id.isSent)
-        val imageViewLeftSwipeActionIcon = view.findViewById<ImageView>(R.id.imageViewLeftSwipeActionIcon)
+        val imageViewLeftSwipeActionIcon =
+            view.findViewById<ImageView>(R.id.imageViewLeftSwipeActionIcon)
         val messageContainer = view.findViewById<ConstraintLayout>(R.id.messageContainer)
 
         date.setTextColor(appearance.dateTextColor)
@@ -144,7 +153,8 @@ class CommonMessageAdapter(appearance: ChatAppearance, initTextMessages: List<Te
 
     private fun applyReplyAuthorNameStyle(view: View) {
         val replyAuthorName = view.findViewById<View>(R.id.replyAuthorName)
-        replyAuthorName.visibility = if (appearance.isOutgoingAuthorNameVisible) View.VISIBLE else View.GONE
+        replyAuthorName.visibility =
+            if (appearance.isOutgoingAuthorNameVisible) View.VISIBLE else View.GONE
     }
 
     private fun applyIncomingConstraints(view: View) {
@@ -157,7 +167,12 @@ class CommonMessageAdapter(appearance: ChatAppearance, initTextMessages: List<Te
         constraintSet.clone(contentContainer as ConstraintLayout)
         constraintSet.setHorizontalBias(avatarContainer.id, 0f)
         constraintSet.setHorizontalBias(messageContainer.id, 0f)
-        constraintSet.connect(messageContainer.id, ConstraintSet.START, avatarContainer.id, ConstraintSet.END)
+        constraintSet.connect(
+            messageContainer.id,
+            ConstraintSet.START,
+            avatarContainer.id,
+            ConstraintSet.END
+        )
         constraintSet.applyTo(contentContainer)
 
         val constraintSet2 = ConstraintSet()
@@ -176,7 +191,12 @@ class CommonMessageAdapter(appearance: ChatAppearance, initTextMessages: List<Te
         constraintSet.clone(contentContainer as ConstraintLayout)
         constraintSet.setHorizontalBias(avatarContainer.id, 1f)
         constraintSet.setHorizontalBias(messageContainer.id, 1f)
-        constraintSet.connect(messageContainer.id, ConstraintSet.END, avatarContainer.id, ConstraintSet.START)
+        constraintSet.connect(
+            messageContainer.id,
+            ConstraintSet.END,
+            avatarContainer.id,
+            ConstraintSet.START
+        )
         constraintSet.applyTo(contentContainer)
 
         val constraintSet2 = ConstraintSet()
