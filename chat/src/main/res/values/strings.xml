@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">Chat</string>
+    <string name="author_name_default">Billy Bob</string>
+    <string name="time_default">12:00</string>
+    <string name="image_description">Image</string>
+    <string name="status_indicator_description">Status indicator</string>
+    <string name="is_sent_description">Is sent</string>
+    <string name="left_swipe_description">Left swipe</string>
+    <string name="is_read_description">Is read</string>
+    <string name="avatar_description">Avatar</string>
 </resources>

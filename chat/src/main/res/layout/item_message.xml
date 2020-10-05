@@ -1,200 +1,164 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools" android:id="@+id/container"
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp">
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/container"
+    style="@style/Container">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/dateContainer"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+        android:id="@+id/dateContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-                android:id="@+id/date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
+            android:id="@+id/date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/contentContainer"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/dateContainer"
-            app:layout_constraintBottom_toBottomOf="parent">
+        android:id="@+id/contentContainer"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dateContainer">
 
         <FrameLayout
-                android:id="@+id/avatarContainer"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-            <include layout="@layout/avatar"/>
+            android:id="@+id/avatarContainer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <include layout="@layout/avatar" />
+
         </FrameLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/messageContainer"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="24dp"
-                android:paddingTop="@dimen/author_name_top_margin"
-                android:paddingLeft="@dimen/author_name_horizontal_margin"
-                android:paddingRight="@dimen/author_name_horizontal_margin"
-                android:paddingBottom="@dimen/author_name_bottom_margin"
-                app:layout_constraintWidth_max="wrap"
-                app:layout_constraintHorizontal_bias="0"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent">
+            android:id="@+id/messageContainer"
+            style="@style/MessageContainer"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <TextView
-                    android:id="@+id/authorName"
-                    android:text="Billy Bob"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="14sp"
-                    android:textColor="@android:color/darker_gray"
-                    android:gravity="end|center_vertical"
-                    android:layout_marginBottom="8dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"/>
+                android:id="@+id/authorName"
+                style="@style/Name"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <FrameLayout
-                    android:id="@+id/replyContainer"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:paddingTop="4dp"
-                    android:paddingRight="16dp"
-                    android:visibility="gone"
-                    app:layout_constraintHorizontal_bias="0"
-                    app:layout_constraintTop_toBottomOf="@id/authorName"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent">
+                android:id="@+id/replyContainer"
+                style="@style/ReplyContainer"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/authorName">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent">
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent">
+
                     <View
-                            android:id="@+id/replyLine"
-                            android:layout_height="0dp"
-                            android:layout_width="2dp"
-                            android:background="@android:color/holo_blue_dark"
-                            android:alpha="0.4"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"/>
+                        android:id="@+id/replyLine"
+                        android:layout_width="2dp"
+                        android:layout_height="0dp"
+                        android:alpha="0.4"
+                        android:background="@android:color/holo_blue_dark"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
                     <TextView
-                            android:id="@+id/replyAuthorName"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="4dp"
-                            android:textColor="#193970"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintStart_toEndOf="@id/replyLine"/>
+                        android:id="@+id/replyAuthorName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:textColor="@color/reply_color"
+                        app:layout_constraintStart_toEndOf="@id/replyLine"
+                        app:layout_constraintTop_toTopOf="parent" />
+
                     <TextView
-                            android:id="@+id/replyMessage"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            app:layout_constrainedWidth="true"
-                            android:layout_marginLeft="4dp"
-                            android:layout_marginTop="4dp"
-                            app:layout_constraintHorizontal_bias="0"
-                            app:layout_constraintTop_toBottomOf="@id/replyAuthorName"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toEndOf="@id/replyLine"/>
+                        android:id="@+id/replyMessage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginTop="4dp"
+                        app:layout_constrainedWidth="true"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0"
+                        app:layout_constraintStart_toEndOf="@id/replyLine"
+                        app:layout_constraintTop_toBottomOf="@id/replyAuthorName" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </FrameLayout>
 
             <TextView
-                    android:id="@+id/message"
-                    android:text="Something hairy"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constrainedWidth="true"
-                    android:layout_marginBottom="8dp"
-                    android:maxWidth="280dp"
-                    android:textSize="18dp"
-                    app:layout_constraintHorizontal_bias="0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/replyContainer"
-                    app:layout_constraintBottom_toTopOf="@+id/time"/>
+                android:id="@+id/message"
+                style="@style/MessageBody"
+                app:layout_constraintBottom_toTopOf="@+id/time"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/replyContainer" />
 
             <ImageView
-                    android:id="@+id/statusIndicator"
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
-                    android:layout_marginRight="8dp"
-                    app:layout_constraintBottom_toBottomOf="@id/time"
-                    app:layout_constraintTop_toTopOf="@id/time"
-                    app:layout_constraintEnd_toStartOf="@id/time"/>
-
-            <TextView
-                    android:id="@+id/time"
-                    android:text="17:33"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:textSize="14sp"
-                    android:textColor="@android:color/darker_gray"
-                    app:layout_constraintHorizontal_bias="1"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"/>
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-        <ImageView
-                android:id="@+id/isSent"
+                android:id="@+id/statusIndicator"
                 android:layout_width="16dp"
                 android:layout_height="16dp"
-                android:layout_marginRight="12dp"
-                android:layout_marginBottom="5dp"
-                android:visibility="gone"
-                android:src="@drawable/ic_access_time_black_24dp"
-                app:layout_constraintBottom_toBottomOf="@id/messageContainer"
-                app:layout_constraintEnd_toStartOf="@id/messageContainer"/>
+                android:layout_marginEnd="8dp"
+                android:contentDescription="@string/status_indicator_description"
+                app:layout_constraintBottom_toBottomOf="@id/time"
+                app:layout_constraintEnd_toStartOf="@id/time"
+                app:layout_constraintTop_toTopOf="@id/time" />
+
+            <TextView
+                android:id="@+id/time"
+                style="@style/Time"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <ImageView
+            android:id="@+id/isSent"
+            style="@style/IsSent"
+            android:contentDescription="@string/is_sent_description"
+            app:layout_constraintBottom_toBottomOf="@id/messageContainer"
+            app:layout_constraintEnd_toStartOf="@id/messageContainer" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <FrameLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="24dp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
         <ImageView
-                android:id="@+id/imageViewLeftSwipeActionIcon"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/ic_reply_black_24dp"/>
+            android:id="@+id/imageViewLeftSwipeActionIcon"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:contentDescription="@string/left_swipe_description"
+            android:src="@drawable/ic_reply_black_24dp" />
+
     </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
