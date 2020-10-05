@@ -47,7 +47,7 @@ class CommonAppearance(val context: Context) : ChatAppearance {
     override val minImageMessageWidth: Int = 100
     override val minImageMessageHeight: Int = minImageMessageWidth
 
-    override var isIncomingAvatarVisible = false
+    override var isIncomingAvatarVisible = true
     override var isOutgoingAvatarVisible = false
     override var isIncomingAuthorNameVisible = true
     override var isOutgoingAuthorNameVisible = true
@@ -85,7 +85,6 @@ class CommonAppearance(val context: Context) : ChatAppearance {
         else
             floatArrayOf(0f, 0f, radius, radius, radius, radius, radius, radius)
     }
-
 
     override fun getOutgoingMessageBackground(isInChain: Boolean) = GradientDrawable().apply {
         setColor(outgoingMessageBackgroundColor)
