@@ -161,15 +161,15 @@ open class MessageAdapter(
             }
         }
 
-//        if (onReplyClickListener == null) {
-//            view.findViewById<ViewGroup>(R.id.replyContainer).setOnClickListener(null)
-//        } else {
-//            view.findViewById<ViewGroup>(R.id.replyContainer).setOnClickListener {
-//                (message as TextMessage).getRepliedMessage()?.let {
-//                    onReplyClickListener?.onReplyClick(it)
-//                }
-//            }
-//        }
+        if (onReplyClickListener == null) {
+            view.findViewById<ViewGroup>(R.id.replyContainer).setOnClickListener(null)
+        } else {
+            view.findViewById<ViewGroup>(R.id.replyContainer).setOnClickListener {
+                (message as TextMessage).getRepliedMessage()?.let {
+                    onReplyClickListener?.onReplyClick(it)
+                }
+            }
+        }
 
         if (position == 0) {
             holder.bind(message, true, getItemViewType(position).toMessageType())
