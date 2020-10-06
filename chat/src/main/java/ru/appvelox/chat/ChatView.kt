@@ -15,7 +15,8 @@ import java.util.*
 
 class ChatView(context: Context, attributeSet: AttributeSet) : RecyclerView(context, attributeSet) {
 
-    private var adapter: MessageAdapter = CommonMessageAdapter(CommonAppearance(context), CommonBehaviour())
+    private var adapter: MessageAdapter =
+        CommonMessageAdapter(CommonAppearance(context), CommonBehaviour())
 
     fun setOnItemClickListener(listener: OnMessageClickListener?) {
         adapter.onItemClickListener = listener

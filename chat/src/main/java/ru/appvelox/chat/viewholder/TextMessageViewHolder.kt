@@ -6,10 +6,10 @@ import kotlinx.android.synthetic.main.avatar.view.*
 import kotlinx.android.synthetic.main.item_message.view.*
 import ru.appvelox.chat.ChatAppearance
 import ru.appvelox.chat.ChatView
-import ru.appvelox.chat.utils.CircularAvatar
 import ru.appvelox.chat.MessageType
 import ru.appvelox.chat.model.Message
 import ru.appvelox.chat.model.TextMessage
+import ru.appvelox.chat.utils.CircularAvatar
 
 class TextMessageViewHolder(
     view: View,

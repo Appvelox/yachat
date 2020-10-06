@@ -38,7 +38,7 @@ class CircularAvatar : Transformation {
     }
 }
 
-class ImageTransformation(
+class RoundedRectImage(
     private val radius: Float,
     private val minWidth: Int,
     private val minHeight: Int,
@@ -91,62 +91,8 @@ class ImageTransformation(
 
         source.recycle()
         shaderBitmap.recycle()
-        return shapedBitmap // bitmap
+        return shapedBitmap
     }
 
     override fun key() = "image rounded $minWidth $minHeight $maxWidth $maxHeight"
-}
-
-//class IncomingImageTransformation(radius: Float, minWidth: Int, minHeight: Int, maxWidth: Int, maxHeight: Int) : ImageTransformation(radius, minWidth, minHeight, maxWidth, maxHeight) {
-//    override fun drawCorner(r: Float, size: Int, canvas: Canvas, paint: Paint) {
-//        canvas.drawRect(0f, 0f, r, r, paint)
-//    }
-//
-//    override fun key() = "incoming_rounded"
-//}
-//
-//class OutgoingImageTransformation(radius: Float, minWidth: Int, minHeight: Int, maxWidth: Int, maxHeight: Int) : ImageTransformation(radius, minWidth, minHeight, maxWidth, maxHeight) {
-//    override fun drawCorner(r: Float, size: Int, canvas: Canvas, paint: Paint) {
-//        canvas.drawRect(size - r, 0f, size.toFloat(), r, paint)
-//    }
-//
-//    override fun key() = "outgoing_rounded"
-//}
-
-class RoundedImage(val radius: Float) : Transformation {
-    override fun transform(source: Bitmap): Bitmap {
-
-        val size = source.width.coerceAtMost(source.height)
-
-        val x = (source.width - size) / 2
-        val y = (source.height - size) / 2
-
-        val squaredBitmap = Bitmap.createBitmap(source, x, y, size, size)
-        if (squaredBitmap != source) {
-            source.recycle()
-        }
-
-        val bitmap = Bitmap.createBitmap(size, size, source.config)
-
-        val canvas = Canvas(bitmap)
-        val paint = Paint()
-        val shader = BitmapShader(squaredBitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP)
-        paint.shader = shader
-        paint.isAntiAlias = true
-
-        val r = 20f
-        canvas.drawRoundRect(
-            RectF(0f, 0f, source.width.toFloat(), source.height.toFloat()),
-            r,
-            r,
-            paint
-        )
-
-        squaredBitmap.recycle()
-        return bitmap
-    }
-
-    override fun key(): String {
-        return "rounded"
-    }
 }
