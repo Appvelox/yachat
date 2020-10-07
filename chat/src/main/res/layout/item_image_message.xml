@@ -71,6 +71,7 @@
                 android:paddingRight="@dimen/author_name_horizontal_margin"
                 android:paddingBottom="@dimen/author_name_bottom_margin"
                 android:text="@string/author_name_default"
+                android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
