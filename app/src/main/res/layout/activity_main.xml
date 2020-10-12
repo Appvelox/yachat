@@ -48,6 +48,7 @@
 
     <EditText
             android:id="@+id/message"
+            android:cursorVisible="false"
             android:layout_width="0dp"
             android:layout_height="60dp"
             android:layout_marginLeft="16dp"

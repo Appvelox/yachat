@@ -4,7 +4,7 @@ import android.graphics.drawable.Drawable
 
 interface ChatAppearance {
 
-//    Size
+    //    Size
     var messageBackgroundCornerRadius: Float
     var replyMessageSize: Float
     var replyAuthorNameSize: Float
@@ -21,7 +21,7 @@ interface ChatAppearance {
     var dateTextSize: Float
     var timeTextSize: Float
 
-//    Color
+    //    Color
     var outgoingSelectedMessageBackgroundColor: Int
     var incomingSelectedMessageBackgroundColor: Int
     var outgoingMessageBackgroundColor: Int
@@ -35,7 +35,7 @@ interface ChatAppearance {
     var timeTextColor: Int
     var imageTimeTextColor: Int
 
-//    Visibility
+    //    Visibility
     var isIncomingAvatarVisible: Boolean
     var isOutgoingAvatarVisible: Boolean
     var isIncomingAuthorNameVisible: Boolean
@@ -59,5 +59,4 @@ interface ChatAppearance {
     fun getTimeBackground(): Drawable?
 
     fun getDateFormatter(): ChatView.DateFormatter
-
 }

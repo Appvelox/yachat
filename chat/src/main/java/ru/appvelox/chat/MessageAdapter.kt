@@ -9,36 +9,43 @@ import org.joda.time.DateTime
 import org.joda.time.Days
 import ru.appvelox.chat.model.Message
 import ru.appvelox.chat.model.TextMessage
+import ru.appvelox.chat.viewholder.ImageViewHolder
+import ru.appvelox.chat.viewholder.MessageViewHolder
+import ru.appvelox.chat.viewholder.TextMessageViewHolder
 
-open class MessageAdapter(val appearance: ChatAppearance, initTextMessages: List<TextMessage>? = null) :
+open class MessageAdapter(
+    val appearance: ChatAppearance,
+    val behaviour: ChatBehaviour,
+    initTextMessages: List<TextMessage>? = null
+) :
     RecyclerView.Adapter<MessageViewHolder>() {
 
-    var onReplyClickListener: ChatView.OnReplyClickListener? = null
+    var onReplyClickListener = behaviour.onReplyClickListener
 
-    var loadMoreListener: ChatView.LoadMoreListener? = null
+    var loadMoreListener = behaviour.loadMoreListener
 
     var currentUserId: Long? = null
 
     var oldDataLoading = false
 
-    var onItemClickListener: ChatView.OnMessageClickListener? = null
+    var onItemClickListener = behaviour.onMessageClickListener
         set(value) {
             notifyDataSetChanged()
             field = value
         }
 
-    var onItemLongClickListener: ChatView.OnMessageLongClickListener? = null
+    var onItemLongClickListener = behaviour.onMessageLongClickListener
         set(value) {
             notifyDataSetChanged()
             field = value
         }
 
-    internal val messageList = mutableListOf<Message>().apply {
+    val messageList = mutableListOf<Message>().apply {
         if (initTextMessages != null)
             addAll(initTextMessages)
     }
 
-    internal val selectedMessageList = mutableListOf<Message>()
+    val selectedMessageList = mutableListOf<Message>()
 
     fun copyPropertiesTo(adapter: MessageAdapter) {
         adapter.onReplyClickListener = onReplyClickListener
@@ -87,7 +94,6 @@ open class MessageAdapter(val appearance: ChatAppearance, initTextMessages: List
         notifyItemChanged(messageList.indexOf(message), null)
     }
 
-
     fun eraseSelectedMessages() {
         val messages = mutableListOf<Message>()
 
@@ -110,7 +116,7 @@ open class MessageAdapter(val appearance: ChatAppearance, initTextMessages: List
 
         val view = LayoutInflater.from(parent.context).inflate(layout, parent, false)
 
-        val viewHolder = when (viewType) {
+        return when (viewType) {
             MessageType.INCOMING_TEXT.type, MessageType.OUTGOING_TEXT.type -> TextMessageViewHolder(
                 view,
                 appearance,
@@ -128,8 +134,6 @@ open class MessageAdapter(val appearance: ChatAppearance, initTextMessages: List
             )
             else -> TextMessageViewHolder(view, appearance, appearance.getDateFormatter())
         }
-
-        return viewHolder
     }
 
     override fun getItemCount() = messageList.size
@@ -140,35 +144,32 @@ open class MessageAdapter(val appearance: ChatAppearance, initTextMessages: List
 
         val view = holder.itemView
 
-//        if (onItemClickListener == null) {
-//            view.findViewById<ViewGroup>(R.id.messageContainer).setOnClickListener(null)
-//        } else {
-//            view.findViewById<ViewGroup>(R.id.messageContainer).setOnClickListener {
-//                onItemClickListener?.onClick(textMessage)
-//            }
-//        }
-//
-//        if (onItemLongClickListener == null) {
-//            view.findViewById<ViewGroup>(R.id.messageContainer).setOnLongClickListener(null)
-//        } else {
-//            view.findViewById<ViewGroup>(R.id.messageContainer).setOnLongClickListener {
-//                onItemLongClickListener?.onLongClick(textMessage)
-//                true
-//            }
-//        }
-//
-//        view.findViewById<ViewGroup>(R.id.replyContainer).setOnClickListener {
-//            textMessage.getRepliedMessage()?.let {
-//                onReplyClickListener?.onReplyClick(it)
-//            }
-//        }
-//
-//        onItemLongClickListener?.let { listener ->
-//            view.findViewById<ViewGroup>(R.id.messageContainer).setOnLongClickListener {
-//                listener.onLongClick(textMessage)
-//                true
-//            }
-//        }
+        if (onItemClickListener == null) {
+            view.findViewById<ViewGroup>(R.id.messageContainer).setOnClickListener(null)
+        } else {
+            view.findViewById<ViewGroup>(R.id.messageContainer).setOnClickListener {
+                onItemClickListener?.onClick(message)
+            }
+        }
+
+        if (onItemLongClickListener == null) {
+            view.findViewById<ViewGroup>(R.id.messageContainer).setOnLongClickListener(null)
+        } else {
+            view.findViewById<ViewGroup>(R.id.messageContainer).setOnLongClickListener {
+                onItemLongClickListener?.onLongClick(message)
+                true
+            }
+        }
+
+        if (onReplyClickListener == null) {
+            view.findViewById<ViewGroup>(R.id.replyContainer).setOnClickListener(null)
+        } else {
+            view.findViewById<ViewGroup>(R.id.replyContainer).setOnClickListener {
+                (message as TextMessage).getRepliedMessage()?.let {
+                    onReplyClickListener?.onReplyClick(it)
+                }
+            }
+        }
 
         if (position == 0) {
             holder.bind(message, true, getItemViewType(position).toMessageType())
@@ -182,7 +183,6 @@ open class MessageAdapter(val appearance: ChatAppearance, initTextMessages: List
         val showMessageDate = daysBetweenMessages != 0
 
         holder.bind(message, showMessageDate, getItemViewType(position).toMessageType())
-
     }
 
     fun getLastMessageIndex(): Int {
@@ -204,19 +204,21 @@ open class MessageAdapter(val appearance: ChatAppearance, initTextMessages: List
         }
     }
 
-    protected fun Message.isIncoming(): Boolean {
+    fun Message.isIncoming(): Boolean {
         val messageAuthorId = getAuthor().getId()
         return messageAuthorId != currentUserId
     }
 
-
     fun requestPreviousMessagesFromListener() {
-        loadMoreListener?.requestPreviousMessages(20, messageList.size, object : ChatView.LoadMoreCallback {
-            override fun onResult(messages: List<Message>) {
-                oldDataLoading = true
-                addOldMessages(messages)
-            }
-        })
+        loadMoreListener?.requestPreviousMessages(
+            20,
+            messageList.size,
+            object : ChatView.LoadMoreCallback {
+                override fun onResult(textMessages: List<Message>) {
+                    oldDataLoading = true
+                    addOldMessages(textMessages)
+                }
+            })
     }
 
     fun notifyAppearanceChanged() {
@@ -227,20 +229,20 @@ open class MessageAdapter(val appearance: ChatAppearance, initTextMessages: List
         return messageList.indexOf(message)
     }
 
-    fun deleteMessage(textMessage: TextMessage) {
-        val position = messageList.indexOf(textMessage)
-        messageList.remove(textMessage)
+    fun deleteMessage(message: Message) {
+        val position = messageList.indexOf(message)
+        messageList.remove(message)
         notifyItemRemoved(position)
     }
 
-    fun updateMessage(textMessage: TextMessage) {
-        val index = messageList.indexOf(messageList.find { it.getId() == textMessage.getId() })
-        messageList[index] = textMessage
+    fun updateMessage(message: Message) {
+        val index = messageList.indexOf(messageList.find { it.getId() == message.getId() })
+        messageList[index] = message
         notifyItemChanged(index)
     }
 
-    fun addMessages(textMessages: MutableList<TextMessage>) {
-        messageList.addAll(textMessages)
+    fun addMessages(messages: MutableList<Message>) {
+        messageList.addAll(messages)
         notifyDataSetChanged()
     }
 }

@@ -1,17 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <style name="Container">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">5dp</item>
+        <item name="android:layout_marginBottom">5dp</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
     <style name="MessageContainer">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:maxWidth">250dp</item>
-        <item name="android:layout_marginRight">10dp</item>
-        <item name="android:layout_marginLeft">10dp</item>
+        <item name="android:layout_marginEnd">10dp</item>
+        <item name="android:layout_marginStart">10dp</item>
         <item name="android:layout_marginTop">24dp</item>
         <item name="android:paddingTop">16dp</item>
-        <item name="android:paddingLeft">16dp</item>
-        <item name="android:paddingRight">16dp</item>
+        <item name="android:paddingStart">16dp</item>
+        <item name="android:paddingEnd">16dp</item>
         <item name="android:paddingBottom">8dp</item>
+        <item name="layout_constraintHorizontal_bias">0</item>
         <item name="layout_constraintWidth_max">wrap</item>
     </style>
 
@@ -21,15 +30,15 @@
         <item name="layout_constrainedWidth">true</item>
         <item name="android:layout_marginBottom">8dp</item>
         <item name="android:maxWidth">280dp</item>
-        <item name="android:text">Something hairy, Something, adoble but, in other </item>
-        <item name="android:textSize">18dp</item>
+        <item name="android:text">Somebody once told me the world is gonna roll me</item>
+        <item name="android:textSize">18sp</item>
         <item name="layout_constraintHorizontal_bias">0</item>
     </style>
 
     <style name="Time">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:text">17:33</item>
+        <item name="android:text">@string/time_default</item>
         <item name="android:layout_marginLeft">16dp</item>
         <item name="layout_constraintHorizontal_bias">1</item>
         <item name="android:textSize">14sp</item>
@@ -39,6 +48,7 @@
     <style name="Name">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
+        <item name="android:text">@string/author_name_default</item>
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">@android:color/darker_gray</item>
         <item name="android:gravity">end|center_vertical</item>
@@ -50,7 +60,17 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginTop">8dp</item>
         <item name="android:paddingTop">4dp</item>
-        <item name="android:paddingRight">16dp</item>
+        <item name="android:paddingEnd">16dp</item>
+        <item name="android:visibility">gone</item>
+        <item name="layout_constraintHorizontal_bias">0</item>
+    </style>
+
+    <style name="IsSent">
+        <item name="android:layout_width">16dp</item>
+        <item name="android:layout_height">16dp</item>
+        <item name="android:layout_marginEnd">12dp</item>
+        <item name="android:layout_marginBottom">5dp</item>
+        <item name="android:src">@drawable/ic_access_time_black_24dp</item>
         <item name="android:visibility">gone</item>
     </style>
 </resources>

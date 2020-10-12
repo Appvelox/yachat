@@ -1,7 +1,5 @@
 package ru.appvelox.chat.model
 
-import java.util.*
-
-interface TextMessage: Message {
+interface TextMessage : Message {
     fun getRepliedMessage(): TextMessage?
 }

@@ -1,15 +1,19 @@
-package ru.appvelox.chat
+package ru.appvelox.chat.common
 
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.drawable.DrawableCompat
+import ru.appvelox.chat.ChatAppearance
+import ru.appvelox.chat.ChatView
+import ru.appvelox.chat.R
 import java.text.SimpleDateFormat
 import java.util.*
 
-internal class DefaultAppearance(val context: Context) : ChatAppearance {
+class CommonAppearance(val context: Context) : ChatAppearance {
     override var messageBackgroundCornerRadius = 0f
     override var incomingMessageBackgroundColor = Color.argb(255, 175, 224, 255)
 
@@ -29,7 +33,6 @@ internal class DefaultAppearance(val context: Context) : ChatAppearance {
     override var authorNameSize: Float = 16f
     override var messageTextSize: Float = 15f
 
-
     override var dateTextSize: Float = 14f
     override var timeTextSize: Float = 12f
     override var dateTextColor: Int = Color.GRAY
@@ -44,7 +47,7 @@ internal class DefaultAppearance(val context: Context) : ChatAppearance {
     override val minImageMessageWidth: Int = 100
     override val minImageMessageHeight: Int = minImageMessageWidth
 
-    override var isIncomingAvatarVisible = false
+    override var isIncomingAvatarVisible = true
     override var isOutgoingAvatarVisible = false
     override var isIncomingAuthorNameVisible = true
     override var isOutgoingAuthorNameVisible = true
@@ -52,8 +55,8 @@ internal class DefaultAppearance(val context: Context) : ChatAppearance {
     override var isOutgoingReplyAuthorNameVisible = true
     override var isSwipeActionIconVisible = true
 
-    val defaultMessageLayout = R.layout.item_message
-    val defaultImageLayout = R.layout.item_image_message
+    private val defaultMessageLayout = R.layout.item_message
+    private val defaultImageLayout = R.layout.item_image_message
 
     override var incomingTextMessageLayout: Int = defaultMessageLayout
     override var outgoingTextMessageLayout: Int = defaultMessageLayout
@@ -77,40 +80,40 @@ internal class DefaultAppearance(val context: Context) : ChatAppearance {
     override fun getIncomingMessageBackground(isInChain: Boolean) = GradientDrawable().apply {
         setColor(incomingMessageBackgroundColor)
         val radius = messageBackgroundCornerRadius
-        if (isInChain)
-            cornerRadii = floatArrayOf(0f, 0f, radius, radius, radius, radius, 0f, 0f)
+        cornerRadii = if (isInChain)
+            floatArrayOf(0f, 0f, radius, radius, radius, radius, 0f, 0f)
         else
-            cornerRadii = floatArrayOf(0f, 0f, radius, radius, radius, radius, radius, radius)
+            floatArrayOf(0f, 0f, radius, radius, radius, radius, radius, radius)
     }
-
 
     override fun getOutgoingMessageBackground(isInChain: Boolean) = GradientDrawable().apply {
         setColor(outgoingMessageBackgroundColor)
         val radius = messageBackgroundCornerRadius
-        if (isInChain)
-            cornerRadii = floatArrayOf(radius, radius, 0f, 0f, 0f, 0f, radius, radius)
+        cornerRadii = if (isInChain)
+            floatArrayOf(radius, radius, 0f, 0f, 0f, 0f, radius, radius)
         else
-            cornerRadii = floatArrayOf(radius, radius, 0f, 0f, radius, radius, radius, radius)
+            floatArrayOf(radius, radius, 0f, 0f, radius, radius, radius, radius)
     }
 
+    override fun getIncomingSelectedMessageBackground(isInChain: Boolean) =
+        GradientDrawable().apply {
+            setColor(outgoingSelectedMessageBackgroundColor)
+            val radius = messageBackgroundCornerRadius
+            cornerRadii = if (isInChain)
+                floatArrayOf(0f, 0f, radius, radius, radius, radius, 0f, 0f)
+            else
+                floatArrayOf(0f, 0f, radius, radius, radius, radius, radius, radius)
+        }
 
-    override fun getIncomingSelectedMessageBackground(isInChain: Boolean) = GradientDrawable().apply {
-        setColor(outgoingSelectedMessageBackgroundColor)
-        val radius = messageBackgroundCornerRadius
-        if (isInChain)
-            cornerRadii = floatArrayOf(0f, 0f, radius, radius, radius, radius, 0f, 0f)
-        else
-            cornerRadii = floatArrayOf(0f, 0f, radius, radius, radius, radius, radius, radius)
-    }
-
-    override fun getOutgoingSelectedMessageBackground(isInChain: Boolean) = GradientDrawable().apply {
-        setColor(incomingSelectedMessageBackgroundColor)
-        val radius = messageBackgroundCornerRadius
-        if (isInChain)
-            cornerRadii = floatArrayOf(radius, radius, 0f, 0f, 0f, 0f, radius, radius)
-        else
-            cornerRadii = floatArrayOf(radius, radius, 0f, 0f, radius, radius, radius, radius)
-    }
+    override fun getOutgoingSelectedMessageBackground(isInChain: Boolean) =
+        GradientDrawable().apply {
+            setColor(incomingSelectedMessageBackgroundColor)
+            val radius = messageBackgroundCornerRadius
+            cornerRadii = if (isInChain)
+                floatArrayOf(radius, radius, 0f, 0f, 0f, 0f, radius, radius)
+            else
+                floatArrayOf(radius, radius, 0f, 0f, radius, radius, radius, radius)
+        }
 
     var swipeActionIconResource = R.drawable.ic_reply_black_24dp
     var readIcon = R.drawable.ic_done_all_black_24dp
@@ -118,39 +121,38 @@ internal class DefaultAppearance(val context: Context) : ChatAppearance {
     var timeBackgroundCapsule = R.drawable.time_background_capsule
 
     override fun getSwipeActionIcon(): Drawable? {
-        return context.resources.getDrawable(swipeActionIconResource)
+        return ResourcesCompat.getDrawable(context.resources, swipeActionIconResource, null)
     }
 
     override fun getReadIndicatorIcon(): Drawable? {
-        return context.resources.getDrawable(readIcon)
+        return ResourcesCompat.getDrawable(context.resources, readIcon, null)
     }
 
     override fun getSentIndicatorIcon(): Drawable? {
-        return context.resources.getDrawable(sentIcon)
+        return ResourcesCompat.getDrawable(context.resources, sentIcon, null)
     }
 
     override fun getTimeBackground(): Drawable? {
-        val drawable = AppCompatResources.getDrawable(context, timeBackgroundCapsule)?:return null
-        val resultDrawable = DrawableCompat.setTint(drawable, Color.parseColor("#70000000"))
+        val drawable = AppCompatResources.getDrawable(context, timeBackgroundCapsule) ?: return null
+        DrawableCompat.setTint(drawable, Color.parseColor("#70000000"))
         return drawable
     }
 
-    var mDateFormatter: ChatView.DateFormatter? = null
     private val defaultDateFormatter = object : ChatView.DateFormatter {
         override fun formatDate(date: Date): String {
-            return SimpleDateFormat("dd MMMM").format(date)
+            return SimpleDateFormat("dd MMMM", Locale.getDefault()).format(date)
         }
 
         override fun formatTime(date: Date): String {
-            return SimpleDateFormat("HH:mm").format(date)
+            return SimpleDateFormat("HH:mm", Locale.getDefault()).format(date)
         }
     }
 
+    private var dateFormatter: ChatView.DateFormatter? = null
     override fun getDateFormatter(): ChatView.DateFormatter {
-        mDateFormatter?.let {
+        dateFormatter?.let {
             return it
         }
         return defaultDateFormatter
     }
-
 }

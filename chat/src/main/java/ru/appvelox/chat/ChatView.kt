@@ -5,6 +5,9 @@ import android.util.AttributeSet
 import android.widget.Toast
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
+import ru.appvelox.chat.common.CommonAppearance
+import ru.appvelox.chat.common.CommonBehaviour
+import ru.appvelox.chat.common.CommonMessageAdapter
 import ru.appvelox.chat.model.Author
 import ru.appvelox.chat.model.Message
 import ru.appvelox.chat.model.TextMessage
@@ -12,7 +15,8 @@ import java.util.*
 
 class ChatView(context: Context, attributeSet: AttributeSet) : RecyclerView(context, attributeSet) {
 
-    private var adapter: MessageAdapter = DefaultMessageAdapter(DefaultAppearance(context))
+    private var adapter: MessageAdapter =
+        CommonMessageAdapter(CommonAppearance(context), CommonBehaviour())
 
     fun setOnItemClickListener(listener: OnMessageClickListener?) {
         adapter.onItemClickListener = listener
@@ -43,11 +47,13 @@ class ChatView(context: Context, attributeSet: AttributeSet) : RecyclerView(cont
         itemTouchHelper.attachToRecyclerView(this)
         swipeToReplyCallback.listener = object : OnSwipeActionListener {
             override fun onAction(textMessage: Message) {
-                Toast.makeText(context, "Reply on textMessage #${textMessage.getId()}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    context,
+                    "Reply on textMessage #${textMessage.getId()}",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
-
-        val typedArray = context.obtainStyledAttributes(attributeSet, R.styleable.ChatView)
 
         adapter.onReplyClickListener = object : OnReplyClickListener {
             override fun onReplyClick(textMessage: Message) {
@@ -56,8 +62,8 @@ class ChatView(context: Context, attributeSet: AttributeSet) : RecyclerView(cont
         }
     }
 
-    fun setSelectOnClick(b: Boolean) {
-        if (b)
+    fun setSelectOnClick(isSelectable: Boolean) {
+        if (isSelectable)
             adapter.onItemClickListener = object : OnMessageClickListener {
                 override fun onClick(textMessage: Message) {
                     adapter.changeMessageSelection(textMessage)
@@ -81,10 +87,6 @@ class ChatView(context: Context, attributeSet: AttributeSet) : RecyclerView(cont
     fun navigateToMessage(textMessage: Message) {
         val scrollTo = adapter.getPositionOfMessage(textMessage)
         layoutManager?.scrollToPosition(scrollTo)
-    }
-
-    interface LoadMoreListener {
-        fun requestPreviousMessages(count: Int, alreadyLoadedMessagesCount: Int, callback: LoadMoreCallback)
     }
 
     fun addOldMessages(textMessages: List<TextMessage>) {
@@ -183,30 +185,41 @@ class ChatView(context: Context, attributeSet: AttributeSet) : RecyclerView(cont
         adapter.notifyDataSetChanged()
     }
 
-    fun addMessages(textMessages: MutableList<TextMessage>) {
-        adapter.addMessages(textMessages)
+    fun addMessages(messages: MutableList<Message>) {
+        adapter.addMessages(messages)
     }
 
     fun setLayout(incomingMessageLayout: Int?, outgoingMessageLayout: Int?) {
         val currentAppearance = adapter.appearance
+        val currentBehaviour = adapter.behaviour
         val oldAdapter = adapter
 
-        if (incomingMessageLayout == null || outgoingMessageLayout == null)
-            adapter = DefaultMessageAdapter(currentAppearance)
+        adapter = if (incomingMessageLayout == null || outgoingMessageLayout == null)
+            CommonMessageAdapter(currentAppearance, currentBehaviour)
         else
-            adapter = MessageAdapter(currentAppearance)
+            MessageAdapter(currentAppearance, currentBehaviour)
 
         oldAdapter.copyPropertiesTo(adapter)
 
         setAdapter(adapter)
 
-        (adapter.appearance as DefaultAppearance).setMessageLayout(incomingMessageLayout, outgoingMessageLayout)
+        (adapter.appearance as CommonAppearance).setMessageLayout(
+            incomingMessageLayout,
+            outgoingMessageLayout
+        )
         adapter.notifyAppearanceChanged()
     }
 
-
     interface LoadMoreCallback {
         fun onResult(textMessages: List<Message>)
+    }
+
+    interface LoadMoreListener {
+        fun requestPreviousMessages(
+            count: Int,
+            alreadyLoadedMessagesCount: Int,
+            callback: LoadMoreCallback
+        )
     }
 
     interface OnMessageClickListener {

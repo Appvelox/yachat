@@ -12,6 +12,7 @@ import ru.appvelox.chat.model.TextMessage
 class MessageAdapterTest {
     private lateinit var appearance: ChatAppearance
     private lateinit var adapter: MessageAdapter
+    private lateinit var behaviour: ChatBehaviour
 
     private val message = mockk<TextMessage>()
     private val messages = listOf(mockk<TextMessage>(), mockk(), mockk())
@@ -19,7 +20,8 @@ class MessageAdapterTest {
     @Before
     fun init() {
         appearance = mockk()
-        adapter = spyk(MessageAdapter(appearance))
+        behaviour = mockk(relaxed = true)
+        adapter = spyk(MessageAdapter(appearance, behaviour))
     }
 
     @Test
