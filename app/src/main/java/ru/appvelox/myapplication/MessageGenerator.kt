@@ -70,7 +70,7 @@ object MessageGenerator {
                 2 -> user3
                 else -> user3
             }
-            private val mMessageText = MessageGenerator.generateMessageText()
+            private val mMessageText = generateMessageText()
             private val mDate = if (oldMessages) previousDate else nextDate
             private val repliedOn = if (Random.nextInt(4) != 0)
                 null
@@ -118,7 +118,7 @@ object MessageGenerator {
                 2 -> user3
                 else -> user3
             }
-            private val mMessageText = MessageGenerator.generateMessageText()
+            private val mMessageText = generateMessageText()
             private val mDate = if (oldMessages) previousDate else nextDate
 
             private val mIsRead = Random.nextBoolean()
@@ -204,6 +204,50 @@ object MessageGenerator {
         }.also { messagesList.add(it) }
     }
 
+    fun generateImageMessage(oldMessages: Boolean): ImageMessage {
+        return object : ImageMessage{
+            private val mId = nextId
+            private val mUser = when (Random.nextInt(3)) {
+                0 -> user1
+                1 -> user2
+                2 -> user3
+                else -> user3
+            }
+            private val mMessageText = generateMessageText()
+            private val mDate = if (oldMessages) previousDate else nextDate
+            private val mImageUrl = when (Random.nextInt(3)) {
+                0 -> "https://homepages.cae.wisc.edu/~ece533/images/baboon.png"
+                1 -> "https://homepages.cae.wisc.edu/~ece533/images/peppers.png"
+                2 -> "https://homepages.cae.wisc.edu/~ece533/images/cat.png"
+                else -> "https://homepages.cae.wisc.edu/~ece533/images/watch.png"
+            }
+
+            override fun getImageUrl(): String? {
+                return mImageUrl
+            }
+
+            override fun getId(): Long {
+                return mId
+            }
+
+            override fun getText(): String {
+                return mMessageText
+            }
+
+            override fun getAuthor(): Author {
+                return mUser
+            }
+
+            override fun getDate(): Date {
+                return mDate
+            }
+
+            override fun getStatus(): Message.Status {
+                val rand = Random.nextInt(10)
+                return if(rand < 4) Message.Status.NONE else if(rand in 4..5) Message.Status.READ else Message.Status.SENT
+            }
+        }
+    }
 
     fun generateMessageText(words: Int = 20): String {
         val wordNumber = wordsArray.size

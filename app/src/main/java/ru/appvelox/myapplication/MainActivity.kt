@@ -52,6 +52,12 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
+        chatInput.setOnImageMenuItemClickListener(object : ChatInput.OnImageMenuItemClickListener {
+            override fun onClick() {
+                chatView.addMessage(MessageGenerator.generateImageMessage(false))
+            }
+        })
+
         chatInput.setText(MessageGenerator.generateMessageText())
 
 
