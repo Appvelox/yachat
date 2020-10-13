@@ -2,15 +2,14 @@ package ru.appvelox.myapplication
 
 import android.graphics.Color
 import android.os.AsyncTask
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
-import ru.appvelox.chat.*
+import ru.appvelox.chat.ChatInput
+import ru.appvelox.chat.ChatView
 import ru.appvelox.chat.model.Message
-import ru.appvelox.chat.model.TextMessage
 import kotlin.random.Random
 
 class MainActivity : AppCompatActivity() {
@@ -45,18 +44,15 @@ class MainActivity : AppCompatActivity() {
         chatView.setCurrentUserId(MessageGenerator.user1.getId())
 
         chatView.addMessage(MessageGenerator.generateMessage(false))
-//        chatView.addMessage(MessageGenerator.generateMessage(false))
-//        chatView.addMessage(MessageGenerator.generateMessage(false))
 
-        message.setText(MessageGenerator.generateMessageText())
+        chatInput.setOnSendButtonClickListener(object : ChatInput.OnSendButtonClickListener {
+            override fun onClick(input: CharSequence?) {
+                chatView.addMessage(MessageGenerator.generateMessage(false, input.toString()))
+                chatInput.setText(MessageGenerator.generateMessageText())
+            }
+        })
 
-        send.setOnClickListener {
-            sendMessage()
-        }
-
-        sendContainer.setOnClickListener {
-            sendMessage()
-        }
+        chatInput.setText(MessageGenerator.generateMessageText())
 
 
 //        val initialMessages = mutableListOf<TextMessage>()
@@ -76,13 +72,6 @@ class MainActivity : AppCompatActivity() {
         }
 
 //        chatView.setLayout(R.layout.item_custom_incoming_message, R.layout.item_custom_outgoing_message)
-    }
-
-    fun sendMessage(){
-        if(message.text.toString().isEmpty())
-            message.setText(MessageGenerator.generateMessageText())
-        chatView.addMessage(MessageGenerator.generateMessage(false, message.text.toString()))
-        message.setText(MessageGenerator.generateMessageText())
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -211,9 +200,30 @@ class MainActivity : AppCompatActivity() {
         chatView.setReplyAuthorTextSize(12f + Random.nextInt(8))
         chatView.setReplyMessageTextSize(12f + Random.nextInt(8))
 
-        chatView.setAuthorTextColor(Color.argb(255, Random.nextInt(255), Random.nextInt(255), Random.nextInt(255)))
-        chatView.setMessageTextColor(Color.argb(255, Random.nextInt(255), Random.nextInt(255), Random.nextInt(255)))
-        chatView.setReplyAuthorTextColor(Color.argb(255, Random.nextInt(255), Random.nextInt(255), Random.nextInt(255)))
+        chatView.setAuthorTextColor(
+            Color.argb(
+                255,
+                Random.nextInt(255),
+                Random.nextInt(255),
+                Random.nextInt(255)
+            )
+        )
+        chatView.setMessageTextColor(
+            Color.argb(
+                255,
+                Random.nextInt(255),
+                Random.nextInt(255),
+                Random.nextInt(255)
+            )
+        )
+        chatView.setReplyAuthorTextColor(
+            Color.argb(
+                255,
+                Random.nextInt(255),
+                Random.nextInt(255),
+                Random.nextInt(255)
+            )
+        )
         chatView.setReplyMessageTextColor(
             Color.argb(
                 255,
