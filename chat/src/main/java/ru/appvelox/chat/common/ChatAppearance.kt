@@ -1,7 +1,11 @@
-package ru.appvelox.chat
+package ru.appvelox.chat.common
 
 import android.graphics.drawable.Drawable
+import ru.appvelox.chat.ChatView
 
+/**
+ * Messages appearance for [ChatView]
+ */
 interface ChatAppearance {
 
     //    Size

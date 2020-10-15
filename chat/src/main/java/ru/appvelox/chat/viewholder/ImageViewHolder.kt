@@ -4,7 +4,7 @@ import android.view.View
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.avatar.view.*
 import kotlinx.android.synthetic.main.item_image_message.view.*
-import ru.appvelox.chat.ChatAppearance
+import ru.appvelox.chat.common.ChatAppearance
 import ru.appvelox.chat.ChatView
 import ru.appvelox.chat.MessageType
 import ru.appvelox.chat.model.ImageMessage
@@ -12,6 +12,9 @@ import ru.appvelox.chat.model.Message
 import ru.appvelox.chat.utils.CircularAvatar
 import ru.appvelox.chat.utils.RoundedRectImage
 
+/**
+ * ViewHolder for [ImageMessage]
+ */
 class ImageViewHolder(
     view: View,
     appearance: ChatAppearance,

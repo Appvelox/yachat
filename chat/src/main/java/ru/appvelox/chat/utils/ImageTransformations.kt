@@ -3,6 +3,9 @@ package ru.appvelox.chat.utils
 import android.graphics.*
 import com.squareup.picasso.Transformation
 
+/**
+ * Transformation for message author avatar
+ */
 class CircularAvatar : Transformation {
     override fun transform(source: Bitmap): Bitmap {
         val size = source.width.coerceAtMost(source.height)
@@ -38,6 +41,9 @@ class CircularAvatar : Transformation {
     }
 }
 
+/**
+ * Transformation for image messages
+ */
 class RoundedRectImage(
     private val radius: Float,
     private val minWidth: Int,

@@ -1,4 +1,4 @@
-package ru.appvelox.chat
+package ru.appvelox.chat.common
 
 import android.os.Handler
 import android.os.Looper
@@ -7,12 +7,19 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import org.joda.time.DateTime
 import org.joda.time.Days
+import ru.appvelox.chat.ChatView
+import ru.appvelox.chat.MessageType
+import ru.appvelox.chat.R
 import ru.appvelox.chat.model.Message
 import ru.appvelox.chat.model.TextMessage
+import ru.appvelox.chat.toMessageType
 import ru.appvelox.chat.viewholder.ImageViewHolder
 import ru.appvelox.chat.viewholder.MessageViewHolder
 import ru.appvelox.chat.viewholder.TextMessageViewHolder
 
+/**
+ * Base adapter for [ChatView]
+ */
 open class MessageAdapter(
     val appearance: ChatAppearance,
     val behaviour: ChatBehaviour,

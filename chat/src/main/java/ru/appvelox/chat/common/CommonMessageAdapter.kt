@@ -10,6 +10,9 @@ import ru.appvelox.chat.*
 import ru.appvelox.chat.model.TextMessage
 import ru.appvelox.chat.viewholder.MessageViewHolder
 
+/**
+ * Default realization of ChatView [MessageAdapter]
+ */
 class CommonMessageAdapter(
     appearance: ChatAppearance,
     behaviour: ChatBehaviour,
@@ -74,7 +77,6 @@ class CommonMessageAdapter(
     }
 
     private fun applyOutgoingAppearance(view: View) {
-        val statusIndicator = view.findViewById<View>(R.id.statusIndicator)
         val avatarContainer = view.findViewById<View>(R.id.avatarContainer)
         val authorName = view.findViewById<View>(R.id.authorName)
         val messageContainer = view.findViewById<View>(R.id.messageContainer)
@@ -87,7 +89,6 @@ class CommonMessageAdapter(
     }
 
     private fun applyIncomingAppearance(view: View) {
-        val statusIndicator = view.findViewById<View>(R.id.statusIndicator)
         val avatarContainer = view.findViewById<View>(R.id.avatarContainer)
         val authorName = view.findViewById<View>(R.id.authorName)
         val messageContainer = view.findViewById<View>(R.id.messageContainer)
@@ -108,8 +109,6 @@ class CommonMessageAdapter(
         val replyMessage = view.findViewById<TextView?>(R.id.replyMessage)
         val replyLine = view.findViewById<View?>(R.id.replyLine)
 
-        val isRead = view.findViewById<ImageView>(R.id.isRead)
-        val isSent = view.findViewById<ImageView>(R.id.isSent)
         val imageViewLeftSwipeActionIcon =
             view.findViewById<ImageView>(R.id.imageViewLeftSwipeActionIcon)
         val messageContainer = view.findViewById<ConstraintLayout>(R.id.messageContainer)

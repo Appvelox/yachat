@@ -5,14 +5,15 @@ import android.util.AttributeSet
 import android.widget.Toast
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import ru.appvelox.chat.common.CommonAppearance
-import ru.appvelox.chat.common.CommonBehaviour
-import ru.appvelox.chat.common.CommonMessageAdapter
+import ru.appvelox.chat.common.*
 import ru.appvelox.chat.model.Author
 import ru.appvelox.chat.model.Message
 import ru.appvelox.chat.model.TextMessage
 import java.util.*
 
+/**
+ * Component for displaying messages
+ */
 class ChatView(context: Context, attributeSet: AttributeSet) : RecyclerView(context, attributeSet) {
 
     private var adapter: MessageAdapter =
@@ -189,6 +190,9 @@ class ChatView(context: Context, attributeSet: AttributeSet) : RecyclerView(cont
         adapter.addMessages(messages)
     }
 
+    /**
+     * Sets custom layouts for [MessageAdapter]
+     */
     fun setLayout(incomingMessageLayout: Int?, outgoingMessageLayout: Int?) {
         val currentAppearance = adapter.appearance
         val currentBehaviour = adapter.behaviour
@@ -210,6 +214,9 @@ class ChatView(context: Context, attributeSet: AttributeSet) : RecyclerView(cont
         adapter.notifyAppearanceChanged()
     }
 
+    /**
+     * Callback for showing more messages
+     */
     interface LoadMoreCallback {
         fun onResult(textMessages: List<Message>)
     }

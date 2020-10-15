@@ -7,6 +7,9 @@ import io.mockk.verify
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
+import ru.appvelox.chat.common.ChatAppearance
+import ru.appvelox.chat.common.ChatBehaviour
+import ru.appvelox.chat.common.MessageAdapter
 import ru.appvelox.chat.model.TextMessage
 
 class MessageAdapterTest {

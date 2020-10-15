@@ -3,11 +3,14 @@ package ru.appvelox.chat.viewholder
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_message.view.*
-import ru.appvelox.chat.ChatAppearance
+import ru.appvelox.chat.common.ChatAppearance
 import ru.appvelox.chat.ChatView
 import ru.appvelox.chat.MessageType
 import ru.appvelox.chat.model.Message
 
+/**
+ * Base ViewHolder for [Message]
+ */
 abstract class MessageViewHolder(
     view: View,
     private val appearance: ChatAppearance,

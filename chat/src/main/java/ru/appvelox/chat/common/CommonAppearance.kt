@@ -7,12 +7,14 @@ import android.graphics.drawable.GradientDrawable
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.drawable.DrawableCompat
-import ru.appvelox.chat.ChatAppearance
 import ru.appvelox.chat.ChatView
 import ru.appvelox.chat.R
 import java.text.SimpleDateFormat
 import java.util.*
 
+/**
+ * Default realization of ChatView [ChatAppearance]
+ */
 class CommonAppearance(val context: Context) : ChatAppearance {
     override var messageBackgroundCornerRadius = 0f
     override var incomingMessageBackgroundColor = Color.argb(255, 175, 224, 255)

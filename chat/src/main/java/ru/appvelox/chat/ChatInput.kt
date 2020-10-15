@@ -8,6 +8,9 @@ import androidx.appcompat.widget.PopupMenu
 import androidx.constraintlayout.widget.ConstraintLayout
 import kotlinx.android.synthetic.main.chat_input.view.*
 
+/**
+ * Component for sending messages
+ */
 class ChatInput(context: Context, attributeSet: AttributeSet) :
     ConstraintLayout(context, attributeSet), TextWatcher {
 
@@ -89,6 +92,9 @@ class ChatInput(context: Context, attributeSet: AttributeSet) :
     override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
     }
 
+    /**
+     * Tracking EditText changes
+     */
     override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
         input = s
         send.isEnabled = !input.isNullOrEmpty()

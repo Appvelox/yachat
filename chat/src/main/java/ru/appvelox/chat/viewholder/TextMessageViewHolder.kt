@@ -4,13 +4,16 @@ import android.view.View
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.avatar.view.*
 import kotlinx.android.synthetic.main.item_message.view.*
-import ru.appvelox.chat.ChatAppearance
+import ru.appvelox.chat.common.ChatAppearance
 import ru.appvelox.chat.ChatView
 import ru.appvelox.chat.MessageType
 import ru.appvelox.chat.model.Message
 import ru.appvelox.chat.model.TextMessage
 import ru.appvelox.chat.utils.CircularAvatar
 
+/**
+ * ViewHolder for [TextMessage]
+ */
 class TextMessageViewHolder(
     view: View,
     appearance: ChatAppearance,
