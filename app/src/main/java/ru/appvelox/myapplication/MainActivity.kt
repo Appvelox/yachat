@@ -1,5 +1,8 @@
 package ru.appvelox.myapplication
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.graphics.Color
 import android.os.AsyncTask
 import android.os.Bundle
@@ -36,6 +39,8 @@ class MainActivity : AppCompatActivity() {
             return field++
         }
 
+    lateinit var optionsMenu: Menu
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -44,6 +49,16 @@ class MainActivity : AppCompatActivity() {
         chatView.setCurrentUserId(MessageGenerator.user1.getId())
 
         chatView.addMessage(MessageGenerator.generateMessage(false))
+
+        chatView.setOnMessageSelectedListener(object : ChatView.OnMessageSelectedListener {
+            override fun onSelected(selected: Boolean) {
+                if (selected) {
+                    showMenuIcons()
+                } else {
+                    hideMenuIcons()
+                }
+            }
+        })
 
         chatInput.setOnSendButtonClickListener(object : ChatInput.OnSendButtonClickListener {
             override fun onClick(input: CharSequence?) {
@@ -82,19 +97,50 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu, menu)
+        if (menu != null) {
+            optionsMenu = menu
+        }
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.changeTheme -> {
+                if (counter == 0)
+                    setTheme1()
+                else {
+                    setTheme2()
+                    counter = 0
+                }
+            }
+            R.id.copy -> {
+                val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                val clip = ClipData.newPlainText("copy", chatView.getSelectedMessagesText())
+                clipboard.setPrimaryClip(clip)
 
-        if (counter == 0)
-            setTheme1()
-        else {
-            setTheme2()
-            counter = 0
+                chatView.eraseSelectedMessages()
+                hideMenuIcons()
+            }
+            R.id.delete -> {
+                chatView.deleteSelectedMessages()
+
+                chatView.eraseSelectedMessages()
+                hideMenuIcons()
+            }
         }
+        hideMenuIcons()
 
         return super.onOptionsItemSelected(item)
+    }
+
+    fun showMenuIcons() {
+        optionsMenu.findItem(R.id.copy).isVisible = true
+        optionsMenu.findItem(R.id.delete).isVisible = true
+    }
+
+    fun hideMenuIcons() {
+        optionsMenu.findItem(R.id.copy).isVisible = false
+        optionsMenu.findItem(R.id.delete).isVisible = false
     }
 
     fun setTheme2() {

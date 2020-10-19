@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.appvelox.chat.common.*
 import ru.appvelox.chat.model.Author
 import ru.appvelox.chat.model.Message
-import ru.appvelox.chat.model.TextMessage
 import java.util.*
 
 /**
@@ -29,6 +28,10 @@ class ChatView(context: Context, attributeSet: AttributeSet) : RecyclerView(cont
 
     fun setLoadMoreListener(listener: LoadMoreListener?) {
         adapter.loadMoreListener = listener
+    }
+
+    fun setOnMessageSelectedListener(listener: OnMessageSelectedListener?) {
+        adapter.onMessageSelectedListener = listener
     }
 
     init {
@@ -64,20 +67,38 @@ class ChatView(context: Context, attributeSet: AttributeSet) : RecyclerView(cont
     }
 
     fun setSelectOnClick(isSelectable: Boolean) {
-        if (isSelectable)
-            adapter.onItemClickListener = object : OnMessageClickListener {
-                override fun onClick(textMessage: Message) {
+        fun onSelected() {
+            if (adapter.selectedMessageList.isNotEmpty()) {
+                adapter.onMessageSelectedListener?.onSelected(true)
+            } else {
+                adapter.onMessageSelectedListener?.onSelected(false)
+            }
+        }
+
+        if (isSelectable) {
+            adapter.onItemLongClickListener = object : OnMessageLongClickListener {
+                override fun onLongClick(textMessage: Message) {
                     adapter.changeMessageSelection(textMessage)
+                    onSelected()
                 }
             }
-        else {
+            adapter.onItemClickListener = object : OnMessageClickListener {
+                override fun onClick(textMessage: Message) {
+                    if (adapter.selectedMessageList.isNotEmpty()) {
+                        adapter.changeMessageSelection(textMessage)
+                        onSelected()
+                    }
+                }
+            }
+        } else {
+            adapter.onItemLongClickListener = null
             adapter.onItemClickListener = null
-            adapter.eraseSelectedMessages()
+            eraseSelectedMessages()
         }
     }
 
-    fun addMessage(textMessage: Message) {
-        adapter.addNewMessage(textMessage)
+    fun addMessage(message: Message) {
+        adapter.addNewMessage(message)
         layoutManager?.scrollToPosition(adapter.getLastMessageIndex())
     }
 
@@ -85,21 +106,42 @@ class ChatView(context: Context, attributeSet: AttributeSet) : RecyclerView(cont
         adapter.currentUserId = id
     }
 
-    fun navigateToMessage(textMessage: Message) {
-        val scrollTo = adapter.getPositionOfMessage(textMessage)
+    fun navigateToMessage(message: Message) {
+        val scrollTo = adapter.getPositionOfMessage(message)
         layoutManager?.scrollToPosition(scrollTo)
     }
 
-    fun addOldMessages(textMessages: List<TextMessage>) {
-        adapter.addOldMessages(textMessages)
+    fun addOldMessages(messages: List<Message>) {
+        adapter.addOldMessages(messages)
     }
 
-    fun deleteMessage(textMessage: TextMessage) {
-        adapter.deleteMessage(textMessage)
+    fun deleteMessage(message: Message) {
+        adapter.deleteMessage(message)
     }
 
-    fun updateMessage(textMessage: TextMessage) {
-        adapter.updateMessage(textMessage)
+    fun updateMessage(message: Message) {
+        adapter.updateMessage(message)
+    }
+
+    fun eraseSelectedMessages() {
+        adapter.eraseSelectedMessages()
+    }
+
+    fun deleteSelectedMessages() {
+        adapter.selectedMessageList.forEach {
+            deleteMessage(it)
+        }
+    }
+
+    fun getSelectedMessagesText(): String {
+        var text = ""
+        with (adapter.selectedMessageList) {
+            this.dropLast(1).forEach {
+                text += it.getText() + "\n"
+            }
+            text += this.last().getText()
+        }
+        return text
     }
 
     fun setMessageBackgroundCornerRadius(radius: Float) {
@@ -247,6 +289,10 @@ class ChatView(context: Context, attributeSet: AttributeSet) : RecyclerView(cont
 
     interface OnAvatarClickListener {
         fun onClick(author: Author)
+    }
+
+    interface OnMessageSelectedListener {
+        fun onSelected(selected: Boolean)
     }
 
     interface DateFormatter {

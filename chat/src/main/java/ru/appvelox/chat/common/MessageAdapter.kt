@@ -47,6 +47,8 @@ open class MessageAdapter(
             field = value
         }
 
+    var onMessageSelectedListener = behaviour.onMessageSelectedListener
+
     val messageList = mutableListOf<Message>().apply {
         if (initTextMessages != null)
             addAll(initTextMessages)

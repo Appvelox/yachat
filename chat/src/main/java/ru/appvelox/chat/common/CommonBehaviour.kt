@@ -12,5 +12,6 @@ class CommonBehaviour : ChatBehaviour {
     override var onReplyClickListener: ChatView.OnReplyClickListener? = null
     override var onSwipeActionListener: ChatView.OnSwipeActionListener? = null
     override var loadMoreListener: ChatView.LoadMoreListener? = null
+    override val onMessageSelectedListener: ChatView.OnMessageSelectedListener? = null
     override var navigateToRepliedMessage: Boolean = true
 }
