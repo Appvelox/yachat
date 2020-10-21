@@ -166,12 +166,14 @@ class CommonMessageAdapter(
         constraintSet.clone(contentContainer as ConstraintLayout)
         constraintSet.setHorizontalBias(avatarContainer.id, 0f)
         constraintSet.setHorizontalBias(messageContainer.id, 0f)
-        constraintSet.connect(
-            messageContainer.id,
-            ConstraintSet.START,
-            avatarContainer.id,
-            ConstraintSet.END
-        )
+        if (appearance.isIncomingAvatarVisible) {
+            constraintSet.connect(
+                messageContainer.id,
+                ConstraintSet.START,
+                avatarContainer.id,
+                ConstraintSet.END
+            )
+        }
         constraintSet.applyTo(contentContainer)
 
         val constraintSet2 = ConstraintSet()
@@ -190,12 +192,14 @@ class CommonMessageAdapter(
         constraintSet.clone(contentContainer as ConstraintLayout)
         constraintSet.setHorizontalBias(avatarContainer.id, 1f)
         constraintSet.setHorizontalBias(messageContainer.id, 1f)
-        constraintSet.connect(
-            messageContainer.id,
-            ConstraintSet.END,
-            avatarContainer.id,
-            ConstraintSet.START
-        )
+        if (appearance.isOutgoingAvatarVisible) {
+            constraintSet.connect(
+                messageContainer.id,
+                ConstraintSet.END,
+                avatarContainer.id,
+                ConstraintSet.START
+            )
+        }
         constraintSet.applyTo(contentContainer)
 
         val constraintSet2 = ConstraintSet()
