@@ -4,7 +4,6 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.graphics.Color
-import android.os.AsyncTask
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -17,34 +16,26 @@ import kotlin.random.Random
 
 class MainActivity : AppCompatActivity() {
 
-    val listener = object : ChatView.LoadMoreListener {
-        override fun requestPreviousMessages(
-            count: Int,
-            alreadyLoadedMessagesCount: Int,
-            callback: ChatView.LoadMoreCallback
-        ) {
-            val messages = mutableListOf<Message>()
-            repeat(count) {
-                messages.add(MessageGenerator.generateMessage(true))
-            }
-            AsyncTask.execute {
-//                Thread.sleep(500)
-                callback.onResult(messages)
-            }
-        }
-    }
-
-    var counter = 0
-        get() {
-            return field++
-        }
+    var isTheme1 = false
 
     lateinit var optionsMenu: Menu
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        chatView.setLoadMoreListener(listener)
+        chatView.setLoadMoreListener(object : ChatView.LoadMoreListener {
+            override fun requestPreviousMessages(
+                count: Int,
+                alreadyLoadedMessagesCount: Int,
+                callback: ChatView.LoadMoreCallback
+            ) {
+                val messages = mutableListOf<Message>()
+                repeat(count) {
+                    messages.add(MessageGenerator.generateMessage(true))
+                }
+                callback.onResult(messages)
+            }
+        })
 
         chatView.setCurrentUserId(MessageGenerator.user1.getId())
 
@@ -106,11 +97,12 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.changeTheme -> {
-                if (counter == 0)
-                    setTheme1()
-                else {
+                if (isTheme1) {
+                    isTheme1 = false
                     setTheme2()
-                    counter = 0
+                } else {
+                    setTheme1()
+                    isTheme1 = true
                 }
             }
             R.id.copy -> {
@@ -143,7 +135,7 @@ class MainActivity : AppCompatActivity() {
         optionsMenu.findItem(R.id.delete).isVisible = false
     }
 
-    fun setTheme2() {
+    private fun setTheme2() {
 
         val color1 = Color.parseColor("#FFF3F9FF")
 //        val color1 = Color.parseColor("#000000")
@@ -195,7 +187,7 @@ class MainActivity : AppCompatActivity() {
         chatView.setSelectOnClick(true)
     }
 
-    fun setTheme1() {
+    private fun setTheme1() {
 
         val color1 = Color.parseColor("#FCFFFC")
         val color2 = Color.parseColor("#EFFFF9")
@@ -243,7 +235,7 @@ class MainActivity : AppCompatActivity() {
         chatView.setSelectOnClick(false)
     }
 
-    fun setRandomTheme() {
+    private fun setRandomTheme() {
         chatView.setMessageBackgroundCornerRadius(Random.nextInt(100).toFloat())
         chatView.setSelectOnClick(Random.nextBoolean())
 
