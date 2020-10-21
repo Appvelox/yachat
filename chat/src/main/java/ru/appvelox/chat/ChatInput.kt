@@ -4,15 +4,15 @@ import android.content.Context
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.AttributeSet
+import android.widget.RelativeLayout
 import androidx.appcompat.widget.PopupMenu
-import androidx.constraintlayout.widget.ConstraintLayout
 import kotlinx.android.synthetic.main.chat_input.view.*
 
 /**
  * Component for sending messages
  */
 class ChatInput(context: Context, attributeSet: AttributeSet) :
-    ConstraintLayout(context, attributeSet), TextWatcher {
+    RelativeLayout(context, attributeSet), TextWatcher {
 
     private var sendButtonClickListener: OnSendButtonClickListener? = null
     private var imageMenuItemClickListener: OnImageMenuItemClickListener? = null
