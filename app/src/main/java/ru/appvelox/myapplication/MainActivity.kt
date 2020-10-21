@@ -4,6 +4,7 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -66,24 +67,11 @@ class MainActivity : AppCompatActivity() {
 
         chatInput.setText(MessageGenerator.generateMessageText())
 
-
-//        val initialMessages = mutableListOf<TextMessage>()
-//        for(counter in 0..50)
-//            initialMessages.add(MessageGenerator.generateMessage(false, textMessage.text.toString()))
-
-//        chatView.addMessages(initialMessages)
-
         setTheme2()
 
         setSupportActionBar(toolbar)
         toolbar.setBackgroundColor(Color.parseColor("#FF061F3D"))
         toolbar.setTitleTextColor(Color.parseColor("#FFFFFF"))
-
-        toolbar.setOnClickListener {
-            setRandomTheme()
-        }
-
-//        chatView.setLayout(R.layout.item_custom_incoming_message, R.layout.item_custom_outgoing_message)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -97,12 +85,12 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.changeTheme -> {
-                if (isTheme1) {
-                    isTheme1 = false
+                isTheme1 = if (isTheme1) {
                     setTheme2()
+                    false
                 } else {
                     setTheme1()
-                    isTheme1 = true
+                    true
                 }
             }
             R.id.copy -> {
@@ -135,28 +123,21 @@ class MainActivity : AppCompatActivity() {
         optionsMenu.findItem(R.id.delete).isVisible = false
     }
 
-    private fun setTheme2() {
+    private fun setTheme1() {
+        val color1 = getColorCompat(R.color.colorBackground1_1)
+        val color2 = getColorCompat(R.color.colorBackground2_1)
+        val color3 = getColorCompat(R.color.colorReply_1)
 
-        val color1 = Color.parseColor("#FFF3F9FF")
-//        val color1 = Color.parseColor("#000000")
-        val color2 = Color.parseColor("#EFfffD")
-        val color3 = Color.parseColor("#3B98D6")
-        val color4 = Color.parseColor("#176EA8")
-        val colorSelect = Color.parseColor("#FFDCDAFF")
+        val textColor1 = getColorCompat(R.color.colorText1_1)
+        val textColor2 = getColorCompat(R.color.colorText2_1)
+        val textColor3 = getColorCompat(R.color.colorText3_1)
+        val textColor4 = getColorCompat(R.color.colorText4_1)
 
-        val textColor1 = color3
-        val textColor2 = Color.parseColor("#000000")
-        val textColor3 = Color.parseColor("#56437A")
-        val textColor4 = Color.parseColor("#000000")
-
-        val textSize1 = 14f
-        val textSize2 = 16f
+        val textSize1 = 16f
+        val textSize2 = 12f
         val textSize3 = 15f
-        val textSize4 = 14f
 
-        val backgroundColor = Color.parseColor("#0A000000")
-        chatView.setBackgroundColor(backgroundColor)
-
+        chatView.setBackgroundResource(R.drawable.wallpaper3)
 
         val radius = 30f
 
@@ -164,49 +145,43 @@ class MainActivity : AppCompatActivity() {
         chatView.setSelectOnClick(Random.nextBoolean())
 
         chatView.setAuthorTextSize(textSize1)
-        chatView.setMessageTextSize(textSize2)
-        chatView.setReplyAuthorTextSize(textSize3)
-        chatView.setReplyMessageTextSize(textSize4)
+        chatView.setMessageTextSize(textSize1)
+        chatView.setReplyAuthorTextSize(textSize2)
+        chatView.setReplyMessageTextSize(textSize3)
 
         chatView.setAuthorTextColor(textColor1)
         chatView.setMessageTextColor(textColor2)
         chatView.setReplyAuthorTextColor(textColor3)
         chatView.setReplyMessageTextColor(textColor4)
 
-        chatView.setReplyLineColor(color4)
+        chatView.setReplyLineColor(color3)
 
         chatView.setIncomingMessageBackgroundColor(color1)
         chatView.setOutgoingMessageBackgroundColor(color2)
         chatView.setIncomingSelectedMessageBackgroundColor(color1)
         chatView.setOutgoingSelectedMessageBackgroundColor(color1)
-        chatView.setIncomingSelectedMessageBackgroundColor(colorSelect)
-        chatView.setOutgoingSelectedMessageBackgroundColor(colorSelect)
 
-//        chatView.setMaxWidth(800)
+        chatView.setMaxWidth(600)
 
-        chatView.setSelectOnClick(true)
+        chatView.setSelectOnClick(false)
     }
 
-    private fun setTheme1() {
+    private fun setTheme2() {
+        val color1 = getColorCompat(R.color.colorBackground1_2)
+        val color2 = getColorCompat(R.color.colorBackground2_2)
+        val color3 = getColorCompat(R.color.colorReply_2)
+        val colorSelect = getColorCompat(R.color.colorSelect_2)
 
-        val color1 = Color.parseColor("#FCFFFC")
-        val color2 = Color.parseColor("#EFFFF9")
-        val color3 = Color.parseColor("#B26C9F")
-        val color4 = Color.parseColor("#176EA8")
+        val textColor1 = getColorCompat(R.color.colorText1_2)
+        val textColor2 = getColorCompat(R.color.colorText2_2)
+        val textColor3 = getColorCompat(R.color.colorText3_2)
 
-        val textColor1 = Color.parseColor("#D5001741")
-        val textColor2 = Color.parseColor("#23001A")
-        val textColor3 = Color.parseColor("#99000000")
-        val textColor4 = Color.parseColor("#B0000000")
-
-        val textSize1 = 16f
+        val textSize1 = 14f
         val textSize2 = 16f
-        val textSize3 = 12f
-        val textSize4 = 15f
+        val textSize3 = 15f
 
-        val backgroundColor = Color.parseColor("#FFFFFF")
-        chatView.setBackgroundResource(R.drawable.wallpaper3)
-
+        val backgroundColor = getColorCompat(R.color.colorBackground3_2)
+        chatView.setBackgroundColor(backgroundColor)
 
         val radius = 40f
 
@@ -216,103 +191,33 @@ class MainActivity : AppCompatActivity() {
         chatView.setAuthorTextSize(textSize1)
         chatView.setMessageTextSize(textSize2)
         chatView.setReplyAuthorTextSize(textSize3)
-        chatView.setReplyMessageTextSize(textSize4)
+        chatView.setReplyMessageTextSize(textSize1)
 
         chatView.setAuthorTextColor(textColor1)
         chatView.setMessageTextColor(textColor2)
         chatView.setReplyAuthorTextColor(textColor3)
-        chatView.setReplyMessageTextColor(textColor4)
+        chatView.setReplyMessageTextColor(textColor2)
 
-        chatView.setReplyLineColor(color4)
+        chatView.setReplyLineColor(color3)
 
         chatView.setIncomingMessageBackgroundColor(color1)
         chatView.setOutgoingMessageBackgroundColor(color2)
         chatView.setIncomingSelectedMessageBackgroundColor(color1)
         chatView.setOutgoingSelectedMessageBackgroundColor(color1)
+        chatView.setIncomingSelectedMessageBackgroundColor(colorSelect)
+        chatView.setOutgoingSelectedMessageBackgroundColor(colorSelect)
 
-//        chatView.setMaxWidth(400)
-
-        chatView.setSelectOnClick(false)
-    }
-
-    private fun setRandomTheme() {
-        chatView.setMessageBackgroundCornerRadius(Random.nextInt(100).toFloat())
-        chatView.setSelectOnClick(Random.nextBoolean())
-
-        chatView.setAuthorTextSize(12f + Random.nextInt(8))
-        chatView.setMessageTextSize(12f + Random.nextInt(8))
-        chatView.setReplyAuthorTextSize(12f + Random.nextInt(8))
-        chatView.setReplyMessageTextSize(12f + Random.nextInt(8))
-
-        chatView.setAuthorTextColor(
-            Color.argb(
-                255,
-                Random.nextInt(255),
-                Random.nextInt(255),
-                Random.nextInt(255)
-            )
-        )
-        chatView.setMessageTextColor(
-            Color.argb(
-                255,
-                Random.nextInt(255),
-                Random.nextInt(255),
-                Random.nextInt(255)
-            )
-        )
-        chatView.setReplyAuthorTextColor(
-            Color.argb(
-                255,
-                Random.nextInt(255),
-                Random.nextInt(255),
-                Random.nextInt(255)
-            )
-        )
-        chatView.setReplyMessageTextColor(
-            Color.argb(
-                255,
-                Random.nextInt(255),
-                Random.nextInt(255),
-                Random.nextInt(255)
-            )
-        )
-
-        chatView.setIncomingMessageBackgroundColor(
-            Color.argb(
-                255,
-                Random.nextInt(255),
-                Random.nextInt(255),
-                Random.nextInt(255)
-            )
-        )
-        chatView.setOutgoingMessageBackgroundColor(
-            Color.argb(
-                255,
-                Random.nextInt(255),
-                Random.nextInt(255),
-                Random.nextInt(255)
-            )
-        )
-        chatView.setIncomingSelectedMessageBackgroundColor(
-            Color.argb(
-                255,
-                Random.nextInt(255),
-                Random.nextInt(255),
-                Random.nextInt(255)
-            )
-        )
-        chatView.setOutgoingSelectedMessageBackgroundColor(
-            Color.argb(
-                255,
-                Random.nextInt(255),
-                Random.nextInt(255),
-                Random.nextInt(255)
-            )
-        )
-
-//        chatView.setMaxWidth(Random.nextInt(1000))
-//        chatView.setMinWidth(Random.nextInt(1000))
+        chatView.setMaxWidth(800)
 
         chatView.setSelectOnClick(true)
+    }
+
+    @Suppress("DEPRECATION")
+    private fun getColorCompat(colorId: Int): Int {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            resources.getColor(colorId, null)
+        } else {
+            resources.getColor(colorId)
+        }
     }
 }
