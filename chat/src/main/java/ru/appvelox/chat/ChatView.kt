@@ -135,7 +135,7 @@ class ChatView(context: Context, attributeSet: AttributeSet) : RecyclerView(cont
 
     fun getSelectedMessagesText(): String {
         var text = ""
-        with (adapter.selectedMessageList) {
+        with(adapter.selectedMessageList) {
             this.dropLast(1).forEach {
                 text += it.getText() + "\n"
             }
@@ -230,30 +230,6 @@ class ChatView(context: Context, attributeSet: AttributeSet) : RecyclerView(cont
 
     fun addMessages(messages: MutableList<Message>) {
         adapter.addMessages(messages)
-    }
-
-    /**
-     * Sets custom layouts for [MessageAdapter]
-     */
-    fun setLayout(incomingMessageLayout: Int?, outgoingMessageLayout: Int?) {
-        val currentAppearance = adapter.appearance
-        val currentBehaviour = adapter.behaviour
-        val oldAdapter = adapter
-
-        adapter = if (incomingMessageLayout == null || outgoingMessageLayout == null)
-            CommonMessageAdapter(currentAppearance, currentBehaviour)
-        else
-            MessageAdapter(currentAppearance, currentBehaviour)
-
-        oldAdapter.copyPropertiesTo(adapter)
-
-        setAdapter(adapter)
-
-        (adapter.appearance as CommonAppearance).setMessageLayout(
-            incomingMessageLayout,
-            outgoingMessageLayout
-        )
-        adapter.notifyAppearanceChanged()
     }
 
     /**
