@@ -123,8 +123,8 @@ object MessageGenerator {
             }
             private val date = if (oldMessages) previousDate else nextDate
             private val imageUrl = when (Random.nextInt(3)) {
-                0 -> "https://homepages.cae.wisc.edu/~ece533/images/baboon.png"
-                1 -> "https://homepages.cae.wisc.edu/~ece533/images/peppers.png"
+                0 -> "https://homepages.cae.wisc.edu/~ece533/images/frymire.png"
+                1 -> "https://i.imgur.com/I8RXpNx.jpg"
                 2 -> "https://homepages.cae.wisc.edu/~ece533/images/cat.png"
                 else -> "https://homepages.cae.wisc.edu/~ece533/images/watch.png"
             }

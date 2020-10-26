@@ -22,7 +22,7 @@ import ru.appvelox.chat.viewholder.TextMessageViewHolder
  */
 open class MessageAdapter(
     val appearance: ChatAppearance,
-    val behaviour: ChatBehaviour,
+    behaviour: ChatBehaviour,
     initTextMessages: List<TextMessage>? = null
 ) :
     RecyclerView.Adapter<MessageViewHolder>() {
@@ -134,12 +134,7 @@ open class MessageAdapter(
             MessageType.INCOMING_IMAGE.type, MessageType.OUTGOING_IMAGE.type -> ImageViewHolder(
                 view,
                 appearance,
-                appearance.getDateFormatter(),
-                appearance.messageBackgroundCornerRadius,
-                appearance.minImageMessageWidth,
-                appearance.minImageMessageHeight,
-                appearance.maxImageMessageWidth,
-                appearance.maxImageMessageHeight
+                appearance.getDateFormatter()
             )
             else -> TextMessageViewHolder(view, appearance, appearance.getDateFormatter())
         }
