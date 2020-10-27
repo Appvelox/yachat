@@ -13,5 +13,6 @@ interface ChatBehaviour {
     val onSwipeActionListener: ChatView.OnSwipeActionListener?
     val loadMoreListener: ChatView.LoadMoreListener?
     val onMessageSelectedListener: ChatView.OnMessageSelectedListener?
+    val onImageClickListener: ChatView.OnImageClickListener?
     val navigateToRepliedMessage: Boolean
 }

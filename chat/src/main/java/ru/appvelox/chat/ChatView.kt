@@ -34,6 +34,10 @@ class ChatView(context: Context, attributeSet: AttributeSet) : RecyclerView(cont
         adapter.onMessageSelectedListener = listener
     }
 
+    fun setOnImageClickListener(listener: OnImageClickListener?) {
+        adapter.onImageClickListener = listener
+    }
+
     init {
         super.setAdapter(adapter)
         val layoutManager = MessageLayoutManager(context)
@@ -269,6 +273,10 @@ class ChatView(context: Context, attributeSet: AttributeSet) : RecyclerView(cont
 
     interface OnMessageSelectedListener {
         fun onSelected(selected: Boolean)
+    }
+
+    interface OnImageClickListener {
+        fun onClick(imageUrl: String)
     }
 
     interface DateFormatter {

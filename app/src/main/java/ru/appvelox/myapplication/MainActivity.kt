@@ -32,7 +32,12 @@ class MainActivity : AppCompatActivity() {
             ) {
                 val messages = mutableListOf<Message>()
                 repeat(count) {
-                    messages.add(MessageGenerator.generateMessage(true, MessageGenerator.generateMessageText()))
+                    messages.add(
+                        MessageGenerator.generateMessage(
+                            true,
+                            MessageGenerator.generateMessageText()
+                        )
+                    )
                 }
                 callback.onResult(messages)
             }
@@ -40,7 +45,12 @@ class MainActivity : AppCompatActivity() {
 
         chatView.setCurrentUserId(MessageGenerator.user1.getId())
 
-        chatView.addMessage(MessageGenerator.generateMessage(false, MessageGenerator.generateMessageText()))
+        chatView.addMessage(
+            MessageGenerator.generateMessage(
+                false,
+                MessageGenerator.generateMessageText()
+            )
+        )
 
         chatView.setOnMessageSelectedListener(object : ChatView.OnMessageSelectedListener {
             override fun onSelected(selected: Boolean) {
@@ -61,7 +71,28 @@ class MainActivity : AppCompatActivity() {
 
         chatInput.setOnImageMenuItemClickListener(object : ChatInput.OnImageMenuItemClickListener {
             override fun onClick() {
-                chatView.addMessage(MessageGenerator.generateImageMessage(false, MessageGenerator.generateMessageText()))
+                chatView.addMessage(
+                    MessageGenerator.generateImageMessage(
+                        false,
+                        MessageGenerator.generateMessageText()
+                    )
+                )
+            }
+        })
+
+        chatView.setOnImageClickListener(object : ChatView.OnImageClickListener {
+            override fun onClick(imageUrl: String) {
+                val bundle = Bundle().apply {
+                    putString("photo", imageUrl)
+                }
+
+                supportFragmentManager
+                    .beginTransaction()
+                    .addToBackStack(null)
+                    .add(android.R.id.content, PhotoFragment().apply {
+                        arguments = bundle
+                    })
+                    .commit()
             }
         })
 

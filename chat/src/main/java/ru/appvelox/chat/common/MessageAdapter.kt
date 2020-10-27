@@ -4,12 +4,14 @@ import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import org.joda.time.DateTime
 import org.joda.time.Days
 import ru.appvelox.chat.ChatView
 import ru.appvelox.chat.MessageType
 import ru.appvelox.chat.R
+import ru.appvelox.chat.model.ImageMessage
 import ru.appvelox.chat.model.Message
 import ru.appvelox.chat.model.TextMessage
 import ru.appvelox.chat.toMessageType
@@ -48,6 +50,8 @@ open class MessageAdapter(
         }
 
     var onMessageSelectedListener = behaviour.onMessageSelectedListener
+
+    var onImageClickListener = behaviour.onImageClickListener
 
     val messageList = mutableListOf<Message>().apply {
         if (initTextMessages != null)
@@ -171,6 +175,16 @@ open class MessageAdapter(
             view.findViewById<ViewGroup>(R.id.replyContainer).setOnClickListener {
                 (message as TextMessage).getRepliedMessage()?.let {
                     onReplyClickListener?.onReplyClick(it)
+                }
+            }
+        }
+
+        if (message is ImageMessage) {
+            if (onImageClickListener == null) {
+                view.findViewById<ImageView>(R.id.image).setOnClickListener(null)
+            } else {
+                view.findViewById<ImageView>(R.id.image).setOnClickListener {
+                    onImageClickListener?.onClick(message.getImageUrl()!!)
                 }
             }
         }

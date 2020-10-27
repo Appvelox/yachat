@@ -3,4 +3,5 @@
     <string name="change_theme_description">Change theme</string>
     <string name="delete_description">Delete</string>
     <string name="copy_description">Copy</string>
+    <string name="photo_viewer">Photo Viewer</string>
 </resources>
