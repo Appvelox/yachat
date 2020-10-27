@@ -65,19 +65,7 @@ class CommonAppearance(val context: Context) : ChatAppearance {
     override var incomingImageMessageLayout: Int = defaultImageLayout
     override var outgoingImageMessageLayout: Int = defaultImageLayout
 
-    fun setMessageLayout(incomingMessageLayout: Int?, outgoingMessageLayout: Int?) {
-        if (incomingMessageLayout == null) {
-            this.incomingTextMessageLayout = defaultMessageLayout
-        } else {
-            this.incomingTextMessageLayout = incomingMessageLayout
-        }
-
-        if (outgoingMessageLayout == null) {
-            this.outgoingTextMessageLayout = defaultMessageLayout
-        } else {
-            this.outgoingTextMessageLayout = outgoingMessageLayout
-        }
-    }
+    override var defaultAvatar: Int = R.drawable.avatar_default
 
     override fun getIncomingMessageBackground(isInChain: Boolean) = GradientDrawable().apply {
         setColor(incomingMessageBackgroundColor)

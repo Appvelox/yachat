@@ -14,9 +14,8 @@ object MessageGenerator {
 
         override fun getId() = 0L
 
-        override fun getAvatar(): String {
-            return "https://www.onthisday.com/images/people/emma-stone-medium.jpg"
-        }
+        override fun getAvatar() =
+            "https://www.onthisday.com/images/people/emma-stone-medium.jpg"
     }
 
     val user2 = object : Author {
@@ -24,9 +23,8 @@ object MessageGenerator {
 
         override fun getId() = 1L
 
-        override fun getAvatar(): String {
-            return "https://m.media-amazon.com/images/M/MV5BMTg0MDc3ODUwOV5BMl5BanBnXkFtZTcwMTk2NjY4Nw@@._V1_UX214_CR0,0,214,317_AL_.jpg"
-        }
+        override fun getAvatar() =
+            "https://m.media-amazon.com/images/M/MV5BMTg0MDc3ODUwOV5BMl5BanBnXkFtZTcwMTk2NjY4Nw@@._V1_UX214_CR0,0,214,317_AL_.jpg"
     }
 
     val user3 = object : Author {
@@ -34,9 +32,7 @@ object MessageGenerator {
 
         override fun getId() = 2L
 
-        override fun getAvatar(): String {
-            return "https://thumbor.forbes.com/thumbor/960x0/https%3A%2F%2Fblogs-images.forbes.com%2Fdannyboice%2Ffiles%2F2014%2F07%2FEN-by-KB-e1404325314835.jpg"
-        }
+        override fun getAvatar(): String? = null
     }
 
     var nextId = 0L

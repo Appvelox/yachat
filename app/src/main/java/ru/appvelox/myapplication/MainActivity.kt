@@ -43,6 +43,8 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
+        chatView.setDefaultAvatar(R.drawable.avatar)
+
         chatView.setCurrentUserId(MessageGenerator.user1.getId())
 
         chatView.addMessage(

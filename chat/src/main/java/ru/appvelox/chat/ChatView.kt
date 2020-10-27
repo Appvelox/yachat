@@ -148,6 +148,11 @@ class ChatView(context: Context, attributeSet: AttributeSet) : RecyclerView(cont
         return text
     }
 
+    fun setDefaultAvatar(avatar: Int) {
+        adapter.appearance.defaultAvatar = avatar
+        adapter.notifyAppearanceChanged()
+    }
+
     fun setMessageBackgroundCornerRadius(radius: Float) {
         adapter.appearance.messageBackgroundCornerRadius = radius
         adapter.notifyAppearanceChanged()
