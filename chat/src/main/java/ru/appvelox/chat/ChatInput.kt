@@ -77,6 +77,10 @@ class ChatInput(context: Context, attributeSet: AttributeSet) :
         message.setText(text)
     }
 
+    fun setMaxLines(linesCount: Int) {
+        message.maxLines = linesCount
+    }
+
     interface OnSendButtonClickListener {
         fun onClick(input: CharSequence?)
     }

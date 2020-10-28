@@ -100,6 +100,8 @@ class MainActivity : AppCompatActivity() {
 
         chatInput.setText(MessageGenerator.generateMessageText())
 
+        chatInput.setMaxLines(4)
+
         setTheme2()
 
         setSupportActionBar(toolbar)
