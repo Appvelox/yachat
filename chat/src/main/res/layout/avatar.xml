@@ -12,8 +12,7 @@
             android:id="@+id/avatar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:contentDescription="@string/avatar_description"
-            android:src="@drawable/avatar_default" />
+            android:contentDescription="@string/avatar_description" />
 
     </androidx.cardview.widget.CardView>
 

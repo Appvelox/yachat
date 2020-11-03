@@ -1,5 +1,8 @@
 package ru.appvelox.chat
 
+/**
+ * Enum for message type definition
+ */
 enum class MessageType(val type: Int) {
     INCOMING_TEXT(0), OUTGOING_TEXT(1), INCOMING_IMAGE(2), OUTGOING_IMAGE(3);
 }

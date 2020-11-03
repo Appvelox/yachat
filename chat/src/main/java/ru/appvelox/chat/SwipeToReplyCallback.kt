@@ -13,6 +13,9 @@ import ru.appvelox.chat.model.Message
 import ru.appvelox.chat.viewholder.MessageViewHolder
 import kotlin.math.abs
 
+/**
+ * Class for changing position of message after swipe
+ */
 class SwipeToReplyCallback : ItemTouchHelper.Callback() {
 
     var triggerOffset = DEFAULT_TRIGGER_OFFSET

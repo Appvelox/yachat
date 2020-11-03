@@ -2,16 +2,22 @@ package ru.appvelox.chat.viewholder
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
+import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.avatar.view.*
 import kotlinx.android.synthetic.main.item_message.view.*
-import ru.appvelox.chat.ChatAppearance
 import ru.appvelox.chat.ChatView
 import ru.appvelox.chat.MessageType
+import ru.appvelox.chat.common.ChatAppearance
 import ru.appvelox.chat.model.Message
+import ru.appvelox.chat.utils.CircularAvatar
 
+/**
+ * Base ViewHolder for [Message]
+ */
 abstract class MessageViewHolder(
-    view: View,
+    val view: View,
     private val appearance: ChatAppearance,
-    protected val dateFormatter: ChatView.DateFormatter
+    private val dateFormatter: ChatView.DateFormatter
 ) :
     RecyclerView.ViewHolder(view) {
     var message: Message? = null
@@ -21,7 +27,29 @@ abstract class MessageViewHolder(
         messageType: MessageType? = null
     ) {
         this.message = message
+
         updateStatusIndicator()
+
+        view.imageViewLeftSwipeActionIcon?.imageAlpha = 0
+
+        itemView.authorName.text = message.getAuthor().getName()
+        itemView.message.text = message.getText()
+        itemView.time.text = dateFormatter.formatTime(message.getDate())
+        itemView.date.text = dateFormatter.formatDate(message.getDate())
+
+        if (message.getAuthor().getAvatar() == null) {
+            Picasso.get()
+                .load(appearance.defaultAvatar)
+                .transform(CircularAvatar())
+                .into(itemView.avatar)
+        } else {
+            Picasso.get()
+                .load(message.getAuthor().getAvatar())
+                .transform(CircularAvatar())
+                .into(itemView.avatar)
+        }
+
+        itemView.dateContainer.visibility = if (showMessageDate) View.VISIBLE else View.GONE
     }
 
     private fun updateStatusIndicator() {

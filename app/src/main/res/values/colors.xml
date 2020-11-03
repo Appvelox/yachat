@@ -3,6 +3,24 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
-    <color name="colorGGG">#FFDCDAFF</color>
+
+    // Theme 1
+    <color name="colorBackground1_1">#FCFFFC</color>
+    <color name="colorBackground2_1">#EFFFF9</color>
+    <color name="colorReply_1">#176EA8</color>
+    <color name="colorText1_1">#D5001741</color>
+    <color name="colorText2_1">#23001A</color>
+    <color name="colorText3_1">#99000000</color>
+    <color name="colorText4_1">#B0000000</color>
+
+    // Theme 2
+    <color name="colorBackground1_2">#FFF3F9FF</color>
+    <color name="colorBackground2_2">#EFfffD</color>
+    <color name="colorBackground3_2">#0A000000</color>
+    <color name="colorReply_2">#176EA8</color>
+    <color name="colorSelect_2">#FFDCDAFF</color>
+    <color name="colorText1_2">#3B98D6</color>
+    <color name="colorText2_2">#000000</color>
+    <color name="colorText3_2">#56437A</color>
 
 </resources>

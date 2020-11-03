@@ -1,7 +1,11 @@
-package ru.appvelox.chat
+package ru.appvelox.chat.common
 
 import android.graphics.drawable.Drawable
+import ru.appvelox.chat.ChatView
 
+/**
+ * Messages appearance for [ChatView]
+ */
 interface ChatAppearance {
 
     //    Size
@@ -48,6 +52,8 @@ interface ChatAppearance {
     var outgoingTextMessageLayout: Int
     var incomingImageMessageLayout: Int
     var outgoingImageMessageLayout: Int
+
+    var defaultAvatar: Int
 
     fun getOutgoingMessageBackground(isInChain: Boolean = false): Drawable?
     fun getIncomingMessageBackground(isInChain: Boolean = false): Drawable?
