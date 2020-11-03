@@ -177,7 +177,6 @@ class MainActivity : AppCompatActivity() {
         val radius = 30f
 
         chatView.setMessageBackgroundCornerRadius(radius)
-        chatView.setSelectOnClick(Random.nextBoolean())
 
         chatView.setAuthorTextSize(textSize1)
         chatView.setMessageTextSize(textSize1)
@@ -221,7 +220,6 @@ class MainActivity : AppCompatActivity() {
         val radius = 40f
 
         chatView.setMessageBackgroundCornerRadius(radius)
-        chatView.setSelectOnClick(Random.nextBoolean())
 
         chatView.setAuthorTextSize(textSize1)
         chatView.setMessageTextSize(textSize2)

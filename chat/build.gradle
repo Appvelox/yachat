@@ -35,7 +35,7 @@ dependencies {
 
     implementation 'com.google.android.material:material:1.2.1'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.2'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation 'joda-time:joda-time:2.10.2'
     implementation 'com.squareup.picasso:picasso:2.71828'
     testImplementation "io.mockk:mockk:1.10.0"
