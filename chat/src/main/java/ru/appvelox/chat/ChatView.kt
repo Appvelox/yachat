@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.appvelox.chat.common.*
 import ru.appvelox.chat.model.Author
 import ru.appvelox.chat.model.Message
-import java.util.*
 
 /**
  * Component for displaying messages
@@ -282,10 +281,5 @@ class ChatView(context: Context, attributeSet: AttributeSet) : RecyclerView(cont
 
     interface OnImageClickListener {
         fun onClick(imageUrl: String)
-    }
-
-    interface DateFormatter {
-        fun formatDate(date: Date): String
-        fun formatTime(date: Date): String
     }
 }

@@ -5,11 +5,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.avatar.view.*
 import kotlinx.android.synthetic.main.item_message.view.*
-import ru.appvelox.chat.ChatView
 import ru.appvelox.chat.MessageType
 import ru.appvelox.chat.common.ChatAppearance
 import ru.appvelox.chat.model.Message
 import ru.appvelox.chat.utils.CircularAvatar
+import ru.appvelox.chat.utils.DateFormatter
 
 /**
  * Base ViewHolder for [Message]
@@ -17,7 +17,7 @@ import ru.appvelox.chat.utils.CircularAvatar
 abstract class MessageViewHolder(
     val view: View,
     private val appearance: ChatAppearance,
-    private val dateFormatter: ChatView.DateFormatter
+    private val dateFormatter: DateFormatter
 ) :
     RecyclerView.ViewHolder(view) {
     var message: Message? = null

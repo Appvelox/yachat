@@ -7,10 +7,9 @@ import android.graphics.drawable.GradientDrawable
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.drawable.DrawableCompat
-import ru.appvelox.chat.ChatView
 import ru.appvelox.chat.R
-import java.text.SimpleDateFormat
-import java.util.*
+import ru.appvelox.chat.utils.DateFormatter
+import ru.appvelox.chat.utils.DefaultDateFormatter
 
 /**
  * Default realization of ChatView [ChatAppearance]
@@ -128,21 +127,11 @@ class CommonAppearance(val context: Context) : ChatAppearance {
         return drawable
     }
 
-    private val defaultDateFormatter = object : ChatView.DateFormatter {
-        override fun formatDate(date: Date): String {
-            return SimpleDateFormat("dd MMMM", Locale.getDefault()).format(date)
-        }
-
-        override fun formatTime(date: Date): String {
-            return SimpleDateFormat("HH:mm", Locale.getDefault()).format(date)
-        }
-    }
-
-    private var dateFormatter: ChatView.DateFormatter? = null
-    override fun getDateFormatter(): ChatView.DateFormatter {
+    private var dateFormatter: DateFormatter? = null
+    override fun getDateFormatter(): DateFormatter {
         dateFormatter?.let {
             return it
         }
-        return defaultDateFormatter
+        return DefaultDateFormatter()
     }
 }

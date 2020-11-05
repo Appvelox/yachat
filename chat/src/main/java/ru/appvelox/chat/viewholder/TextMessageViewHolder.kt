@@ -2,11 +2,11 @@ package ru.appvelox.chat.viewholder
 
 import android.view.View
 import kotlinx.android.synthetic.main.item_message.view.*
-import ru.appvelox.chat.ChatView
 import ru.appvelox.chat.MessageType
 import ru.appvelox.chat.common.ChatAppearance
 import ru.appvelox.chat.model.Message
 import ru.appvelox.chat.model.TextMessage
+import ru.appvelox.chat.utils.DateFormatter
 
 /**
  * ViewHolder for [TextMessage]
@@ -14,7 +14,7 @@ import ru.appvelox.chat.model.TextMessage
 class TextMessageViewHolder(
     view: View,
     appearance: ChatAppearance,
-    dateFormatter: ChatView.DateFormatter
+    dateFormatter: DateFormatter
 ) :
     MessageViewHolder(view, appearance, dateFormatter) {
 

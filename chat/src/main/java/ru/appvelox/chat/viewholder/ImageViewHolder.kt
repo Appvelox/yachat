@@ -3,11 +3,11 @@ package ru.appvelox.chat.viewholder
 import android.view.View
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_image_message.view.*
-import ru.appvelox.chat.ChatView
 import ru.appvelox.chat.MessageType
 import ru.appvelox.chat.common.ChatAppearance
 import ru.appvelox.chat.model.ImageMessage
 import ru.appvelox.chat.model.Message
+import ru.appvelox.chat.utils.DateFormatter
 
 /**
  * ViewHolder for [ImageMessage]
@@ -15,7 +15,7 @@ import ru.appvelox.chat.model.Message
 class ImageViewHolder(
     view: View,
     appearance: ChatAppearance,
-    dateFormatter: ChatView.DateFormatter
+    dateFormatter: DateFormatter
 ) :
     MessageViewHolder(view, appearance, dateFormatter) {
     override fun bind(
