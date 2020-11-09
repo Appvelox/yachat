@@ -45,6 +45,14 @@ class DialogView(context: Context, attributeSet: AttributeSet) :
 
     fun addOldDialogs(dialogs: List<Dialog>) = adapter.addOldDialogs(dialogs)
 
+    fun setOnItemClickListener(listener: OnDialogClickListener?) {
+        adapter.onItemClickListener = listener
+    }
+
+    fun setOnItemLongClickListener(listener: OnDialogLongClickListener?) {
+        adapter.onItemLongClickListener = listener
+    }
+
     /**
      * Callback for showing more messages
      */

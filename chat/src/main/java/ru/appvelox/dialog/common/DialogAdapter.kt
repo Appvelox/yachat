@@ -103,6 +103,25 @@ class DialogAdapter(
     override fun onBindViewHolder(holder: DialogViewHolder, position: Int) {
         val dialog = dialogsList[position]
 
+        val view = holder.itemView
+
+        if (onItemClickListener == null) {
+            view.findViewById<ViewGroup>(R.id.dialogContainer).setOnClickListener(null)
+        } else {
+            view.findViewById<ViewGroup>(R.id.dialogContainer).setOnClickListener {
+                onItemClickListener?.onClick(dialog)
+            }
+        }
+
+        if (onItemLongClickListener == null) {
+            view.findViewById<ViewGroup>(R.id.dialogContainer).setOnLongClickListener(null)
+        } else {
+            view.findViewById<ViewGroup>(R.id.dialogContainer).setOnLongClickListener {
+                onItemLongClickListener?.onLongClick(dialog)
+                true
+            }
+        }
+
         holder.bind(dialog)
     }
 
