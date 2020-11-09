@@ -1,19 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-
-    <androidx.cardview.widget.CardView
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        app:cardBackgroundColor="@android:color/transparent"
-        app:cardCornerRadius="24dp">
-
-        <ImageView
-            android:id="@+id/avatar"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:contentDescription="@string/avatar_description" />
-
-    </androidx.cardview.widget.CardView>
-
-</merge>
+<ImageView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/avatar"
+    android:layout_width="48dp"
+    android:layout_height="48dp"
+    android:background="@android:color/transparent"
+    android:contentDescription="@string/avatar_description" />
