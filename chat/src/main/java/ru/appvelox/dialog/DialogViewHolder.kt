@@ -6,9 +6,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.avatar.view.*
 import kotlinx.android.synthetic.main.item_dialog.view.*
-import ru.appvelox.dialog.common.DialogAppearance
 import ru.appvelox.chat.utils.CircularAvatar
 import ru.appvelox.chat.utils.DateFormatter
+import ru.appvelox.dialog.common.DialogAppearance
 
 /**
  * ViewHolder for [Dialog]
@@ -34,7 +34,7 @@ class DialogViewHolder(
         }
 
         itemView.dialogName.text = dialog.getName()
-        itemView.dialogTime.text = dateFormatter.formatTime(dialog.getTime())
+        itemView.dialogDate.text = dateFormatter.formatTime(dialog.getTime())
 
         if (dialog.getLastMessage().getAuthor().getAvatar() == null) {
             Picasso.get()
@@ -48,7 +48,18 @@ class DialogViewHolder(
                 .into(itemView.lastAuthorAvatar as ImageView)
         }
 
+        itemView.lastAuthorAvatar.visibility =
+            if (appearance.lastAuthorAvatarEnabled) View.VISIBLE else View.GONE
+
         itemView.lastMessage.text = dialog.getLastMessage().getText()
-        itemView.unreadMessagesCounter.text = dialog.getUnreadMessagesCount().toString()
+
+        if (dialog.getUnreadMessagesCount() == 0 || !appearance.messagesCounterEnabled) {
+            itemView.unreadMessagesCounter.visibility = View.GONE
+        } else {
+            itemView.unreadMessagesCounter.text = dialog.getUnreadMessagesCount().toString()
+        }
+
+        itemView.dialogDivider.visibility =
+            if (appearance.dialogDividerEnabled) View.VISIBLE else View.GONE
     }
 }

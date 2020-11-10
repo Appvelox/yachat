@@ -1,9 +1,13 @@
 package ru.appvelox.dialog.common
 
+import android.graphics.Typeface
+import android.graphics.drawable.GradientDrawable
 import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import ru.appvelox.chat.R
 import ru.appvelox.dialog.Dialog
@@ -94,6 +98,10 @@ class DialogAdapter(
         }
     }
 
+    fun notifyAppearanceChanged() {
+        notifyDataSetChanged()
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DialogViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_dialog, parent, false)
 
@@ -104,6 +112,12 @@ class DialogAdapter(
         val dialog = dialogsList[position]
 
         val view = holder.itemView
+
+        if (dialog.getUnreadMessagesCount() > 0) {
+            applyUnreadStyle(view)
+        } else {
+            applyDefaultStyle(view)
+        }
 
         if (onItemClickListener == null) {
             view.findViewById<ViewGroup>(R.id.dialogContainer).setOnClickListener(null)
@@ -123,6 +137,50 @@ class DialogAdapter(
         }
 
         holder.bind(dialog)
+    }
+
+    private fun applyDefaultStyle(view: View) {
+        view.setBackgroundColor(appearance.dialogItemBackground)
+
+        val dialogName = view.findViewById<TextView>(R.id.dialogName)
+        val dialogDate = view.findViewById<TextView>(R.id.dialogDate)
+        val lastMessage = view.findViewById<TextView>(R.id.lastMessage)
+
+        dialogName.setTextColor(appearance.dialogNameTextColor)
+        dialogName.setTypeface(Typeface.DEFAULT, appearance.dialogNameTypeface)
+        dialogName.textSize = appearance.dialogNameTextSize
+
+        dialogDate.setTextColor(appearance.dialogDateColor)
+        dialogDate.setTypeface(Typeface.DEFAULT, appearance.dialogDateTypeface)
+        dialogDate.textSize = appearance.dialogDateTextSize
+
+        lastMessage.setTextColor(appearance.dialogMessageTextColor)
+        lastMessage.setTypeface(Typeface.DEFAULT, appearance.dialogMessageTypeface)
+        lastMessage.textSize = appearance.dialogMessageTextSize
+    }
+
+    private fun applyUnreadStyle(view: View) {
+        view.setBackgroundColor(appearance.dialogUnreadItemBackground)
+
+        val dialogName = view.findViewById<TextView>(R.id.dialogName)
+        val dialogDate = view.findViewById<TextView>(R.id.dialogDate)
+        val lastMessage = view.findViewById<TextView>(R.id.lastMessage)
+        val messagesCounter = view.findViewById<TextView>(R.id.unreadMessagesCounter)
+
+        dialogName.setTextColor(appearance.dialogUnreadNameTextColor)
+        dialogName.setTypeface(Typeface.DEFAULT, appearance.dialogUnreadNameTypeface)
+        dialogName.textSize = appearance.dialogUnreadNameTextSize
+
+        dialogDate.setTextColor(appearance.dialogUnreadDateColor)
+        dialogDate.setTypeface(Typeface.DEFAULT, appearance.dialogUnreadDateTypeface)
+        dialogDate.textSize = appearance.dialogUnreadDateTextSize
+
+        lastMessage.setTextColor(appearance.dialogUnreadMessageTextColor)
+        lastMessage.setTypeface(Typeface.DEFAULT, appearance.dialogUnreadMessageTypeface)
+        lastMessage.textSize = appearance.dialogUnreadMessageTextSize
+
+        val counterBackground = messagesCounter.background as GradientDrawable
+        counterBackground.setColor(appearance.messagesCounterBackgroundColor)
     }
 
     override fun getItemCount(): Int {

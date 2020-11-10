@@ -53,6 +53,11 @@ class DialogView(context: Context, attributeSet: AttributeSet) :
         adapter.onItemLongClickListener = listener
     }
 
+    fun setDefaultPhoto(defaultPhoto: Int) {
+        adapter.appearance.defaultPhoto = defaultPhoto
+        adapter.notifyAppearanceChanged()
+    }
+
     /**
      * Callback for showing more messages
      */
