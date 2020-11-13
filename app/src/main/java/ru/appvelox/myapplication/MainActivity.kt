@@ -27,6 +27,20 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
+        dialogView.setSwipeLeftListener(object : DialogView.OnSwipeLeftListener {
+            override fun onAction(dialog: Dialog) {
+                Toast.makeText(this@MainActivity, "SwipeLeft", Toast.LENGTH_SHORT).show()
+            }
+
+        })
+
+        dialogView.swtSwipeRightListener(object : DialogView.OnSwipeRightListener {
+            override fun onAction(dialog: Dialog) {
+                Toast.makeText(this@MainActivity, "SwipeRight", Toast.LENGTH_SHORT).show()
+            }
+
+        })
+
         val dialogs = generateDialogs()
 
         dialogView.addDialogs(dialogs)

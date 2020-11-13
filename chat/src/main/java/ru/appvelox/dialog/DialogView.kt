@@ -2,6 +2,7 @@ package ru.appvelox.dialog
 
 import android.content.Context
 import android.util.AttributeSet
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ru.appvelox.dialog.common.CommonDialogAppearance
@@ -15,6 +16,7 @@ class DialogView(context: Context, attributeSet: AttributeSet) :
     RecyclerView(context, attributeSet) {
 
     private val adapter = DialogAdapter(CommonDialogAppearance(context), CommonDialogBehaviour())
+    private val swipeCallback = SwipeCallback()
 
     init {
         super.setAdapter(adapter)
@@ -30,6 +32,8 @@ class DialogView(context: Context, attributeSet: AttributeSet) :
                 }
             }
         })
+
+        ItemTouchHelper(swipeCallback).attachToRecyclerView(this)
     }
 
     fun addDialog(dialog: Dialog) {
@@ -51,6 +55,14 @@ class DialogView(context: Context, attributeSet: AttributeSet) :
 
     fun setOnItemLongClickListener(listener: OnDialogLongClickListener?) {
         adapter.onItemLongClickListener = listener
+    }
+
+    fun setSwipeLeftListener(listener: OnSwipeLeftListener) {
+        swipeCallback.swipeLeftListener = listener
+    }
+
+    fun swtSwipeRightListener(listener: OnSwipeRightListener) {
+        swipeCallback.swipeRightListener = listener
     }
 
     fun setDefaultPhoto(defaultPhoto: Int) {

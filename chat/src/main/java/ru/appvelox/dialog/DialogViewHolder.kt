@@ -20,7 +20,11 @@ class DialogViewHolder(
 ) :
     RecyclerView.ViewHolder(view) {
 
+    lateinit var dialog: Dialog
+
     fun bind(dialog: Dialog) {
+        this.dialog = dialog
+
         if (dialog.getPhoto() == null) {
             Picasso.get()
                 .load(appearance.defaultPhoto)
