@@ -4,6 +4,7 @@ import ru.appvelox.chat.model.Author
 import ru.appvelox.chat.model.ImageMessage
 import ru.appvelox.chat.model.Message
 import ru.appvelox.chat.model.TextMessage
+import ru.appvelox.dialog.Dialog
 import java.util.*
 import kotlin.random.Random
 
@@ -38,6 +39,9 @@ object MessageGenerator {
     var nextId = 0L
         get() = field++
 
+
+    var dialogId = 0L
+        get() = field++
 
     var previousDate = Date()
         get() {
@@ -159,6 +163,56 @@ object MessageGenerator {
             message.append(" ")
         }
         return message.toString().toLowerCase(Locale.ROOT).capitalize(Locale.ROOT)
+    }
+
+    fun generateDialogs(dialogsCount: Int = 20): List<Dialog> {
+        val dialogs = mutableListOf<Dialog>()
+
+        for (position in 0 until dialogsCount) {
+            dialogs.add(position, object : Dialog {
+                private val id = dialogId
+                private val date = nextDate
+                private val imageUrl = when (Random.nextInt(3)) {
+                    0 -> "https://homepages.cae.wisc.edu/~ece533/images/frymire.png"
+                    1 -> "https://i.imgur.com/I8RXpNx.jpg"
+                    2 -> "https://homepages.cae.wisc.edu/~ece533/images/cat.png"
+                    else -> "https://homepages.cae.wisc.edu/~ece533/images/watch.png"
+                }
+                private val unreadMessagesCount = Random.nextInt(3)
+                private val lastMessage = generateTextMessage(true, generateMessageText())
+
+                override fun getName(): String {
+                    return "Test chat #$id"
+                }
+
+                override fun getId(): Long {
+                    return id
+                }
+
+                override fun getPhoto(): String? {
+                    return imageUrl
+                }
+
+                override fun getTime(): Date {
+                    return date
+                }
+
+                override fun getAuthors(): List<Author> {
+                    return listOf(user1, user2, user3)
+                }
+
+                override fun getLastMessage(): Message {
+                    return lastMessage
+                }
+
+                override fun getUnreadMessagesCount(): Int {
+                    return unreadMessagesCount
+                }
+
+            })
+        }
+
+        return dialogs.toList()
     }
 
     private val wordsArray =

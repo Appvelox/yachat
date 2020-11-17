@@ -2,6 +2,7 @@ package ru.appvelox.chat.common
 
 import android.graphics.drawable.Drawable
 import ru.appvelox.chat.ChatView
+import ru.appvelox.chat.utils.DateFormatter
 
 /**
  * Messages appearance for [ChatView]
@@ -64,5 +65,5 @@ interface ChatAppearance {
     fun getSentIndicatorIcon(): Drawable?
     fun getTimeBackground(): Drawable?
 
-    fun getDateFormatter(): ChatView.DateFormatter
+    fun getDateFormatter(): DateFormatter
 }
