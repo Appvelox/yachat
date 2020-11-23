@@ -56,7 +56,7 @@ class ChatView(context: Context, attributeSet: AttributeSet) : RecyclerView(cont
             override fun onAction(textMessage: Message) {
                 Toast.makeText(
                     context,
-                    "Reply on textMessage #${textMessage.getId()}",
+                    "Reply on textMessage #${textMessage.id}",
                     Toast.LENGTH_SHORT
                 ).show()
             }
@@ -105,7 +105,7 @@ class ChatView(context: Context, attributeSet: AttributeSet) : RecyclerView(cont
         layoutManager?.scrollToPosition(adapter.getLastMessageIndex())
     }
 
-    fun setCurrentUserId(id: Long) {
+    fun setCurrentUserId(id: String) {
         adapter.currentUserId = id
     }
 
@@ -140,9 +140,9 @@ class ChatView(context: Context, attributeSet: AttributeSet) : RecyclerView(cont
         var text = ""
         with(adapter.selectedMessageList) {
             this.dropLast(1).forEach {
-                text += it.getText() + "\n"
+                text += it.text + "\n"
             }
-            text += this.last().getText()
+            text += this.last().text
         }
         return text
     }

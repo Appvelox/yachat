@@ -32,19 +32,19 @@ abstract class MessageViewHolder(
 
         view.imageViewLeftSwipeActionIcon?.imageAlpha = 0
 
-        itemView.authorName.text = message.getAuthor().getName()
-        itemView.message.text = message.getText()
-        itemView.time.text = dateFormatter.formatTime(message.getDate())
-        itemView.date.text = dateFormatter.formatDate(message.getDate())
+        itemView.authorName.text = message.author.name
+        itemView.message.text = message.text
+        itemView.time.text = dateFormatter.formatTime(message.date)
+        itemView.date.text = dateFormatter.formatDate(message.date)
 
-        if (message.getAuthor().getAvatar() == null) {
+        if (message.author.avatar.isNullOrEmpty()) {
             Picasso.get()
                 .load(appearance.defaultAvatar)
                 .transform(CircularAvatar())
                 .into(itemView.avatar)
         } else {
             Picasso.get()
-                .load(message.getAuthor().getAvatar())
+                .load(message.author.avatar)
                 .transform(CircularAvatar())
                 .into(itemView.avatar)
         }
@@ -55,11 +55,11 @@ abstract class MessageViewHolder(
     private fun updateStatusIndicator() {
         val message = message ?: return
 
-        if (message.getStatus() == Message.Status.NONE) {
+        if (message.status == Message.Status.NONE) {
             itemView.statusIndicator.visibility = View.GONE
         }
 
-        val icon = when (message.getStatus()) {
+        val icon = when (message.status) {
             Message.Status.READ -> appearance.getReadIndicatorIcon()
             Message.Status.SENT -> appearance.getSentIndicatorIcon()
             else -> appearance.getReadIndicatorIcon()

@@ -127,7 +127,7 @@ class MessageAdapterTest {
     @Test
     fun updateMessage_adapterNotified() {
         every { adapter.notifyItemChanged(any()) } returns Unit
-        every { message.getId() } returns 0
+        every { message.id } returns "0"
 
         adapter.messageList.add(message)
 

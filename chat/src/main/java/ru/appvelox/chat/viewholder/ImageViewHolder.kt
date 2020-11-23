@@ -30,7 +30,7 @@ class ImageViewHolder(
         itemView.dateContainer.visibility = if (showMessageDate) View.VISIBLE else View.GONE
 
         Picasso.get()
-            .load(imageMessage.getImageUrl())
+            .load(imageMessage.imageUrl)
             .into(itemView.image)
     }
 }

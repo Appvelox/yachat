@@ -54,7 +54,7 @@ class DialogAdapter(
     }
 
     fun updateDialog(dialog: Dialog) {
-        val index = dialogsList.indexOf(dialogsList.find { it.getId() == dialog.getId() })
+        val index = dialogsList.indexOf(dialogsList.find { it.id == dialog.id })
         dialogsList[index] = dialog
         notifyItemChanged(index)
     }
@@ -113,7 +113,7 @@ class DialogAdapter(
 
         val view = holder.itemView
 
-        if (dialog.getUnreadMessagesCount() > 0) {
+        if (dialog.unreadMessagesCount > 0) {
             applyUnreadStyle(view)
         } else {
             applyDefaultStyle(view)

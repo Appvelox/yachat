@@ -11,34 +11,27 @@ import kotlin.random.Random
 object MessageGenerator {
 
     val user1 = object : Author {
-        override fun getName() = "Emma Stone"
-
-        override fun getId() = 0L
-
-        override fun getAvatar() =
+        override var id = 0L.toString()
+        override var name = "Emma Stone"
+        override var avatar: String? =
             "https://www.onthisday.com/images/people/emma-stone-medium.jpg"
     }
 
     val user2 = object : Author {
-        override fun getName() = "Matthew McConaughey"
-
-        override fun getId() = 1L
-
-        override fun getAvatar() =
+        override var id = 1L.toString()
+        override var name = "Matthew McConaughey"
+        override var avatar: String? =
             "https://m.media-amazon.com/images/M/MV5BMTg0MDc3ODUwOV5BMl5BanBnXkFtZTcwMTk2NjY4Nw@@._V1_UX214_CR0,0,214,317_AL_.jpg"
     }
 
     val user3 = object : Author {
-        override fun getName() = "Edward Norton"
-
-        override fun getId() = 2L
-
-        override fun getAvatar(): String? = null
+        override var id = 2L.toString()
+        override var name = "Edward Norton"
+        override var avatar: String? = ""
     }
 
     var nextId = 0L
         get() = field++
-
 
     var dialogId = 0L
         get() = field++
@@ -57,7 +50,7 @@ object MessageGenerator {
             return currentDate
         }
 
-    val messagesList = mutableListOf<TextMessage>()
+    val messagesList = mutableListOf<Message>()
 
     fun generateMessage(oldMessages: Boolean, messageText: String): Message {
         return if (Random.nextBoolean())
@@ -67,15 +60,17 @@ object MessageGenerator {
 
     private fun generateTextMessage(oldMessages: Boolean, messageText: String): TextMessage {
         return object : TextMessage {
+            override var id = nextId.toString()
 
-            private val id = nextId
             private val user = when (Random.nextInt(3)) {
                 0 -> user1
                 1 -> user2
                 2 -> user3
                 else -> user3
             }
-            private val date = if (oldMessages) previousDate else nextDate
+
+            override var date = if (oldMessages) previousDate else nextDate
+
             private val repliedOn = if (Random.nextInt(4) != 0)
                 null
             else {
@@ -85,75 +80,60 @@ object MessageGenerator {
                     messagesList[Random.nextInt(messagesList.size)]
             }
 
-            override fun getId(): Long {
-                return id
-            }
+            override var text = messageText
 
-            override fun getText(): String {
-                return messageText
-            }
+            override var author = user
 
-            override fun getAuthor(): Author {
-                return user
-            }
+            override var repliedMessage = repliedOn
 
-            override fun getDate(): Date {
-                return date
-            }
-
-            override fun getRepliedMessage(): TextMessage? {
-                return repliedOn
-            }
-
-            override fun getStatus(): Message.Status {
-                val rand = Random.nextInt(10)
-                return if (rand < 4) Message.Status.NONE else if (rand in 4..5) Message.Status.READ else Message.Status.SENT
-            }
+            override val status: Message.Status
+                get() {
+                    val rand = Random.nextInt(10)
+                    return when {
+                        rand < 4 -> Message.Status.NONE
+                        rand in 4..5 -> Message.Status.READ
+                        else -> Message.Status.SENT
+                    }
+                }
         }.also { messagesList.add(it) }
     }
 
     fun generateImageMessage(oldMessages: Boolean, messageText: String): ImageMessage {
         return object : ImageMessage {
-            private val id = nextId
+            override var id = nextId.toString()
+
             private val user = when (Random.nextInt(3)) {
                 0 -> user1
                 1 -> user2
                 2 -> user3
                 else -> user3
             }
-            private val date = if (oldMessages) previousDate else nextDate
-            private val imageUrl = when (Random.nextInt(3)) {
+
+            override var date = if (oldMessages) previousDate else nextDate
+
+            private val url = when (Random.nextInt(3)) {
                 0 -> "https://homepages.cae.wisc.edu/~ece533/images/frymire.png"
                 1 -> "https://i.imgur.com/I8RXpNx.jpg"
                 2 -> "https://homepages.cae.wisc.edu/~ece533/images/cat.png"
                 else -> "https://homepages.cae.wisc.edu/~ece533/images/watch.png"
             }
 
-            override fun getImageUrl(): String? {
-                return imageUrl
-            }
+            override var imageUrl = url
 
-            override fun getId(): Long {
-                return id
-            }
+            override var text = messageText
 
-            override fun getText(): String {
-                return messageText
-            }
+            override var author = user
 
-            override fun getAuthor(): Author {
-                return user
-            }
-
-            override fun getDate(): Date {
-                return date
-            }
-
-            override fun getStatus(): Message.Status {
-                val rand = Random.nextInt(10)
-                return if (rand < 4) Message.Status.NONE else if (rand in 4..5) Message.Status.READ else Message.Status.SENT
-            }
-        }
+            override val status: Message.Status
+                get() {
+                    val rand = Random.nextInt(10)
+                    return when {
+                        rand < 4 -> Message.Status.NONE
+                        rand in 4..5 -> Message.Status.READ
+                        else -> Message.Status.SENT
+                    }
+                }
+        }.also { messagesList.add(it) }
     }
 
     fun generateMessageText(words: Int = 20): String {
@@ -170,45 +150,26 @@ object MessageGenerator {
 
         for (position in 0 until dialogsCount) {
             dialogs.add(position, object : Dialog {
-                private val id = dialogId
-                private val date = nextDate
+                override var id = dialogId.toString()
+                override var date = nextDate
                 private val imageUrl = when (Random.nextInt(3)) {
                     0 -> "https://homepages.cae.wisc.edu/~ece533/images/frymire.png"
                     1 -> "https://i.imgur.com/I8RXpNx.jpg"
                     2 -> "https://homepages.cae.wisc.edu/~ece533/images/cat.png"
                     else -> "https://homepages.cae.wisc.edu/~ece533/images/watch.png"
                 }
-                private val unreadMessagesCount = Random.nextInt(3)
-                private val lastMessage = generateTextMessage(true, generateMessageText())
+                private val messagesCount = Random.nextInt(3)
+                private val message = generateTextMessage(true, generateMessageText())
 
-                override fun getName(): String {
-                    return "Test chat #$id"
-                }
+                override var name = "Test chat #$id"
 
-                override fun getId(): Long {
-                    return id
-                }
+                override var photo: String? = imageUrl
 
-                override fun getPhoto(): String? {
-                    return imageUrl
-                }
+                override var authors = listOf(user1, user2, user3)
 
-                override fun getTime(): Date {
-                    return date
-                }
+                override var lastMessage = message as Message
 
-                override fun getAuthors(): List<Author> {
-                    return listOf(user1, user2, user3)
-                }
-
-                override fun getLastMessage(): Message {
-                    return lastMessage
-                }
-
-                override fun getUnreadMessagesCount(): Int {
-                    return unreadMessagesCount
-                }
-
+                override var unreadMessagesCount = messagesCount
             })
         }
 

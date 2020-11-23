@@ -5,11 +5,11 @@ import ru.appvelox.chat.model.Message
 import java.util.*
 
 interface Dialog {
-    fun getName(): String
-    fun getId(): Long
-    fun getPhoto(): String?
-    fun getTime(): Date
-    fun getAuthors(): List<Author>
-    fun getLastMessage(): Message
-    fun getUnreadMessagesCount(): Int
+    var id: String
+    var name: String
+    var date: Date
+    var authors: List<Author>
+    var lastMessage: Message
+    var unreadMessagesCount: Int
+    var photo: String?
 }

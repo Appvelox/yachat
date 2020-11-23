@@ -33,7 +33,7 @@ open class MessageAdapter(
 
     var loadMoreListener = behaviour.loadMoreListener
 
-    var currentUserId: Long? = null
+    var currentUserId: String? = null
 
     var oldDataLoading = false
 
@@ -173,7 +173,7 @@ open class MessageAdapter(
             view.findViewById<ViewGroup>(R.id.replyContainer).setOnClickListener(null)
         } else {
             view.findViewById<ViewGroup>(R.id.replyContainer).setOnClickListener {
-                (message as TextMessage).getRepliedMessage()?.let {
+                (message as TextMessage).repliedMessage?.let {
                     onReplyClickListener?.onReplyClick(it)
                 }
             }
@@ -184,7 +184,7 @@ open class MessageAdapter(
                 view.findViewById<ImageView>(R.id.image).setOnClickListener(null)
             } else {
                 view.findViewById<ImageView>(R.id.image).setOnClickListener {
-                    onImageClickListener?.onClick(message.getImageUrl()!!)
+                    onImageClickListener?.onClick(message.imageUrl)
                 }
             }
         }
@@ -195,8 +195,8 @@ open class MessageAdapter(
         }
 
         val previousMessage = messageList[position - 1]
-        val messageDate = DateTime(message.getDate()).withTimeAtStartOfDay()
-        val previousMessageDate = DateTime(previousMessage.getDate()).withTimeAtStartOfDay()
+        val messageDate = DateTime(message.date).withTimeAtStartOfDay()
+        val previousMessageDate = DateTime(previousMessage.date).withTimeAtStartOfDay()
         val daysBetweenMessages = Days.daysBetween(messageDate, previousMessageDate).days
         val showMessageDate = daysBetweenMessages != 0
 
@@ -223,7 +223,7 @@ open class MessageAdapter(
     }
 
     fun Message.isIncoming(): Boolean {
-        val messageAuthorId = getAuthor().getId()
+        val messageAuthorId = author.id
         return messageAuthorId != currentUserId
     }
 
@@ -254,7 +254,7 @@ open class MessageAdapter(
     }
 
     fun updateMessage(message: Message) {
-        val index = messageList.indexOf(messageList.find { it.getId() == message.getId() })
+        val index = messageList.indexOf(messageList.find { it.id == message.id })
         messageList[index] = message
         notifyItemChanged(index)
     }

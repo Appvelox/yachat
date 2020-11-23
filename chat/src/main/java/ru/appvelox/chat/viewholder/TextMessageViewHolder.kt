@@ -23,15 +23,15 @@ class TextMessageViewHolder(
 
         val textMessage = message as TextMessage
 
-        val replyMessage = textMessage.getRepliedMessage()
+        val replyMessage = textMessage.repliedMessage
 
         itemView.replyContainer?.let {
             if (replyMessage == null) {
                 itemView.replyContainer.visibility = View.GONE
             } else {
                 itemView.replyContainer.visibility = View.VISIBLE
-                itemView.replyAuthorName.text = replyMessage.getAuthor().getName()
-                itemView.replyMessage.text = replyMessage.getText()
+                itemView.replyAuthorName.text = replyMessage.author.name
+                itemView.replyMessage.text = replyMessage.text
             }
         }
     }

@@ -25,29 +25,29 @@ class DialogViewHolder(
     fun bind(dialog: Dialog) {
         this.dialog = dialog
 
-        if (dialog.getPhoto() == null) {
+        if (dialog.photo.isNullOrEmpty()) {
             Picasso.get()
                 .load(appearance.defaultPhoto)
                 .transform(CircularAvatar())
                 .into(itemView.avatar)
         } else {
             Picasso.get()
-                .load(dialog.getPhoto())
+                .load(dialog.photo)
                 .transform(CircularAvatar())
                 .into(itemView.avatar)
         }
 
-        itemView.dialogName.text = dialog.getName()
-        itemView.dialogDate.text = dateFormatter.formatTime(dialog.getTime())
+        itemView.dialogName.text = dialog.name
+        itemView.dialogDate.text = dateFormatter.formatTime(dialog.date)
 
-        if (dialog.getLastMessage().getAuthor().getAvatar() == null) {
+        if (dialog.lastMessage.author.avatar.isNullOrEmpty()) {
             Picasso.get()
                 .load(appearance.defaultPhoto)
                 .transform(CircularAvatar())
                 .into(itemView.lastAuthorAvatar as ImageView)
         } else {
             Picasso.get()
-                .load(dialog.getLastMessage().getAuthor().getAvatar())
+                .load(dialog.lastMessage.author.avatar)
                 .transform(CircularAvatar())
                 .into(itemView.lastAuthorAvatar as ImageView)
         }
@@ -55,12 +55,12 @@ class DialogViewHolder(
         itemView.lastAuthorAvatar.visibility =
             if (appearance.lastAuthorAvatarEnabled) View.VISIBLE else View.GONE
 
-        itemView.lastMessage.text = dialog.getLastMessage().getText()
+        itemView.lastMessage.text = dialog.lastMessage.text
 
-        if (dialog.getUnreadMessagesCount() == 0 || !appearance.messagesCounterEnabled) {
+        if (dialog.unreadMessagesCount == 0 || !appearance.messagesCounterEnabled) {
             itemView.unreadMessagesCounter.visibility = View.GONE
         } else {
-            itemView.unreadMessagesCounter.text = dialog.getUnreadMessagesCount().toString()
+            itemView.unreadMessagesCounter.text = dialog.unreadMessagesCount.toString()
         }
 
         itemView.dialogDivider.visibility =
