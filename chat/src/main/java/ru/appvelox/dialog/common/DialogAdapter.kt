@@ -72,6 +72,11 @@ class DialogAdapter(
         notifyDialogsInserted(dialogs)
     }
 
+    fun deleteDialogs() {
+        dialogsList.clear()
+        notifyDataSetChanged()
+    }
+
     fun requestPreviousMessagesFromListener() {
         loadMoreListener?.requestPreviousDialogs(
             20,

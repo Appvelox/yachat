@@ -240,6 +240,10 @@ class ChatView(context: Context, attributeSet: AttributeSet) : RecyclerView(cont
         adapter.addMessages(messages)
     }
 
+    fun deleteMessages() {
+        adapter.deleteMessages()
+    }
+
     /**
      * Callback for showing more messages
      */

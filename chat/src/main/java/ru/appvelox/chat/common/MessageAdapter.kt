@@ -263,4 +263,9 @@ open class MessageAdapter(
         messageList.addAll(messages)
         notifyDataSetChanged()
     }
+
+    fun deleteMessages() {
+        messageList.clear()
+        notifyDataSetChanged()
+    }
 }

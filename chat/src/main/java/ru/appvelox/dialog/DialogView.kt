@@ -49,6 +49,8 @@ class DialogView(context: Context, attributeSet: AttributeSet) :
 
     fun addOldDialogs(dialogs: List<Dialog>) = adapter.addOldDialogs(dialogs)
 
+    fun deleteDialogs() = adapter.deleteDialogs()
+
     fun setOnItemClickListener(listener: OnDialogClickListener?) {
         adapter.onItemClickListener = listener
     }
