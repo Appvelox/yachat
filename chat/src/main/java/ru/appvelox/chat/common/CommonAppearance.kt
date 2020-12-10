@@ -104,10 +104,10 @@ class CommonAppearance(val context: Context) : ChatAppearance {
                 floatArrayOf(radius, radius, 0f, 0f, radius, radius, radius, radius)
         }
 
-    var swipeActionIconResource = R.drawable.ic_reply_black_24dp
-    var readIcon = R.drawable.ic_done_all_black_24dp
-    var sentIcon = R.drawable.ic_access_time_black_24dp
-    var timeBackgroundCapsule = R.drawable.time_background_capsule
+    private var swipeActionIconResource = R.drawable.ic_reply_black_24dp
+    private var readIcon = R.drawable.ic_done_all_black_24dp
+    private var sentIcon = R.drawable.ic_access_time_black_24dp
+    private var timeBackgroundCapsule = R.drawable.time_background_capsule
 
     override fun getSwipeActionIcon(): Drawable? {
         return ResourcesCompat.getDrawable(context.resources, swipeActionIconResource, null)

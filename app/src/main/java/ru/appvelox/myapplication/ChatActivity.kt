@@ -9,20 +9,27 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import kotlinx.android.synthetic.main.activity_chat.*
+import androidx.appcompat.widget.Toolbar
 import ru.appvelox.chat.ChatInput
 import ru.appvelox.chat.ChatView
 import ru.appvelox.chat.model.Message
 
 class ChatActivity : AppCompatActivity() {
 
-    var isTheme1 = false
+    private var isTheme1 = false
 
-    lateinit var optionsMenu: Menu
+    private lateinit var optionsMenu: Menu
+
+    lateinit var chatView: ChatView
+    lateinit var chatInput: ChatInput
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat)
+
+        chatView = findViewById(R.id.chatView)
+        chatInput = findViewById(R.id.chatInput)
+
         chatView.setLoadMoreListener(object : ChatView.LoadMoreListener {
             override fun requestPreviousMessages(
                 count: Int,
@@ -103,6 +110,7 @@ class ChatActivity : AppCompatActivity() {
 
         setTheme2()
 
+        val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
         toolbar.setBackgroundColor(Color.parseColor("#FF061F3D"))
         toolbar.setTitleTextColor(Color.parseColor("#FFFFFF"))

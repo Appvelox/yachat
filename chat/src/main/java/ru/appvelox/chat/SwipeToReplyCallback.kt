@@ -8,7 +8,6 @@ import android.view.MotionEvent
 import android.widget.ImageView
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.item_message.view.*
 import ru.appvelox.chat.model.Message
 import ru.appvelox.chat.viewholder.MessageViewHolder
 import kotlin.math.abs
@@ -109,6 +108,9 @@ class SwipeToReplyCallback : ItemTouchHelper.Callback() {
 
         setTouchListener(recyclerView)
 
+        val leftSwipeActionIcon =
+            viewHolder.itemView.findViewById<ImageView>(R.id.imageViewLeftSwipeActionIcon)
+
         if (dX < -triggerOffset) {
             if (!isVibrationCompleted) {
                 @Suppress("DEPRECATION")
@@ -117,24 +119,24 @@ class SwipeToReplyCallback : ItemTouchHelper.Callback() {
                 )
                 isVibrationCompleted = true
             }
-            makeActionIconOpaque(viewHolder.itemView.imageViewLeftSwipeActionIcon)
+            makeActionIconOpaque(leftSwipeActionIcon)
 
             return
         }
 
         if (dX == 0f) {
-            makeActionIconTransparent(viewHolder.itemView.imageViewLeftSwipeActionIcon)
+            makeActionIconTransparent(leftSwipeActionIcon)
             isVibrationCompleted = false
         }
         if (dX < -actionIconStartAppearingOffset) {
-            setActionIconAlpha(dX, viewHolder.itemView.imageViewLeftSwipeActionIcon)
+            setActionIconAlpha(dX, leftSwipeActionIcon)
         }
 
         if (dX > -triggerOffset)
             getDefaultUIUtil().onDraw(
                 c,
                 recyclerView,
-                viewHolder.itemView.contentContainer,
+                viewHolder.itemView.findViewById(R.id.contentContainer),
                 dX,
                 dY,
                 actionState,

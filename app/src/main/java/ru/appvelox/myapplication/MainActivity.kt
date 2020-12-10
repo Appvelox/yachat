@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import kotlinx.android.synthetic.main.activity_main.*
 import ru.appvelox.dialog.Dialog
 import ru.appvelox.dialog.DialogView
 import ru.appvelox.myapplication.MessageGenerator.generateDialogs
@@ -14,6 +13,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        val dialogView = findViewById<DialogView>(R.id.dialogView)
 
         dialogView.setOnItemClickListener(object : DialogView.OnDialogClickListener {
             override fun onClick(dialog: Dialog) {
