@@ -1,8 +1,10 @@
 package ru.appvelox.chat.viewholder
 
 import android.view.View
-import kotlinx.android.synthetic.main.item_message.view.*
+import android.widget.FrameLayout
+import android.widget.TextView
 import ru.appvelox.chat.MessageType
+import ru.appvelox.chat.R
 import ru.appvelox.chat.common.ChatAppearance
 import ru.appvelox.chat.model.Message
 import ru.appvelox.chat.model.TextMessage
@@ -24,14 +26,16 @@ class TextMessageViewHolder(
         val textMessage = message as TextMessage
 
         val replyMessage = textMessage.repliedMessage
+        val replyContainer = itemView.findViewById<FrameLayout>(R.id.replyContainer)
 
-        itemView.replyContainer?.let {
+        replyContainer?.let {
             if (replyMessage == null) {
-                itemView.replyContainer.visibility = View.GONE
+                replyContainer.visibility = View.GONE
             } else {
-                itemView.replyContainer.visibility = View.VISIBLE
-                itemView.replyAuthorName.text = replyMessage.author.name
-                itemView.replyMessage.text = replyMessage.text
+                replyContainer.visibility = View.VISIBLE
+                itemView.findViewById<TextView>(R.id.replyAuthorName).text =
+                    replyMessage.author.name
+                itemView.findViewById<TextView>(R.id.replyMessage).text = replyMessage.text
             }
         }
     }

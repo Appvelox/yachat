@@ -19,9 +19,6 @@ jobs:
         run: |
           touch github.properties
           ./gradlew build
-        env:
-          GPR_USER: ${{ secrets.GPR_USER }}
-          GPR_TOKEN: ${{ secrets.GPR_TOKEN }}
       - name: Run unit tests
         run: ./gradlew test
       - name: Publish to GitHub Packages

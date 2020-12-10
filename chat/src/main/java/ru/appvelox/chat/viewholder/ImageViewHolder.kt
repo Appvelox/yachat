@@ -1,9 +1,11 @@
 package ru.appvelox.chat.viewholder
 
 import android.view.View
+import android.widget.ImageView
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.item_image_message.view.*
 import ru.appvelox.chat.MessageType
+import ru.appvelox.chat.R
 import ru.appvelox.chat.common.ChatAppearance
 import ru.appvelox.chat.model.ImageMessage
 import ru.appvelox.chat.model.Message
@@ -27,10 +29,11 @@ class ImageViewHolder(
 
         val imageMessage = message as ImageMessage
 
-        itemView.dateContainer.visibility = if (showMessageDate) View.VISIBLE else View.GONE
+        itemView.findViewById<ConstraintLayout>(R.id.dateContainer).visibility =
+            if (showMessageDate) View.VISIBLE else View.GONE
 
         Picasso.get()
             .load(imageMessage.imageUrl)
-            .into(itemView.image)
+            .into(itemView.findViewById<ImageView>(R.id.image))
     }
 }

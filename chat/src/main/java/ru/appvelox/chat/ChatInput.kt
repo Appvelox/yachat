@@ -4,9 +4,11 @@ import android.content.Context
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.AttributeSet
+import android.widget.EditText
+import android.widget.FrameLayout
+import android.widget.ImageButton
 import androidx.appcompat.widget.PopupMenu
 import androidx.constraintlayout.widget.ConstraintLayout
-import kotlinx.android.synthetic.main.chat_input.view.*
 
 /**
  * Component for sending messages
@@ -19,9 +21,14 @@ class ChatInput(context: Context, attributeSet: AttributeSet) :
     private var fileMenuItemClickListener: OnFileMenuItemClickListener? = null
 
     private var input: CharSequence? = null
+    private val message: EditText
+    private val send: ImageButton
 
     init {
         val view = inflate(context, R.layout.chat_input, this)
+
+        message = findViewById(R.id.message)
+        send = findViewById(R.id.send)
 
         message.addTextChangedListener(this)
 
@@ -33,11 +40,11 @@ class ChatInput(context: Context, attributeSet: AttributeSet) :
             }
         }
 
-        sendContainer.setOnClickListener {
+        findViewById<FrameLayout>(R.id.sendContainer).setOnClickListener {
             send.callOnClick()
         }
 
-        attach.setOnClickListener {
+        findViewById<ImageButton>(R.id.attach).setOnClickListener {
             val popup = PopupMenu(context, view)
             popup.setOnMenuItemClickListener {
                 when (it.itemId) {
@@ -56,8 +63,8 @@ class ChatInput(context: Context, attributeSet: AttributeSet) :
             popup.show()
         }
 
-        attachContainer.setOnClickListener {
-            attach.callOnClick()
+        findViewById<FrameLayout>(R.id.attachContainer).setOnClickListener {
+            findViewById<ImageButton>(R.id.attach).callOnClick()
         }
     }
 
