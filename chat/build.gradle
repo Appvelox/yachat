@@ -1,6 +1,18 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'maven-publish'
+
+def githubProperties = new Properties()
+githubProperties.load(new FileInputStream(rootProject.file("github.properties")))
+
+def getVersionName = { ->
+    return "1.0.1"
+}
+
+def getArtifactId = { ->
+    return "chat"
+}
 
 android {
     compileSdkVersion 30
@@ -42,4 +54,27 @@ dependencies {
 }
 repositories {
     mavenCentral()
+}
+
+publishing {
+    publications {
+        bar(MavenPublication) {
+            groupId 'ru.appvelox'
+            artifactId getArtifactId()
+            version getVersionName()
+            artifact("$buildDir/outputs/aar/${getArtifactId()}-release.aar")
+        }
+    }
+
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/appvelox/yachat")
+
+            credentials {
+                username = System.getenv("GPR_USER") ?: githubProperties['gpr.usr']
+                password = System.getenv("GPR_TOKEN") ?: githubProperties['gpr.key']
+            }
+        }
+    }
 }
