@@ -1,5 +1,5 @@
 package ru.appvelox.chat.model
 
-interface ImageMessage: Message {
-    fun getImageUrl(): String?
+interface ImageMessage : Message {
+    var imageUrl: String
 }

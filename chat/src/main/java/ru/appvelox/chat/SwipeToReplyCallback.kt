@@ -1,5 +1,6 @@
 package ru.appvelox.chat
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Canvas
 import android.os.Vibrator
@@ -9,56 +10,59 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_message.view.*
 import ru.appvelox.chat.model.Message
-import ru.appvelox.chat.model.TextMessage
+import ru.appvelox.chat.viewholder.MessageViewHolder
 import kotlin.math.abs
 
+/**
+ * Class for changing position of message after swipe
+ */
 class SwipeToReplyCallback : ItemTouchHelper.Callback() {
 
-    private val MAX_TRIGGER_OFFSET = 500f
-    private val MIN_TRIGGER_OFFSET = 100f
-    private val DEFAULT_TRIGGER_OFFSET = 200f
-
-    private val MIN_ACTION_ICON_START_APPEARING_OFFSET = 0f
-    private val DEFAULT_ACTION_ICON_START_APPEARING_OFFSET = 100f
-
-    private val MIN_VIBRATION_DURATION = 0L
-    private val MAX_VIBRATION_DURATION = 500L
-    private val DEFAULT_VIBRATION_DURATION = 10L
-
     var triggerOffset = DEFAULT_TRIGGER_OFFSET
-    set(value) {
-        if(value > MAX_TRIGGER_OFFSET)
-            field = MAX_TRIGGER_OFFSET
-        else if(value < MIN_TRIGGER_OFFSET)
-            field = MIN_TRIGGER_OFFSET
-        else field = value
-    }
+        set(value) {
+            field = when {
+                value > MAX_TRIGGER_OFFSET -> MAX_TRIGGER_OFFSET
+                value < MIN_TRIGGER_OFFSET -> MIN_TRIGGER_OFFSET
+                else -> value
+            }
+        }
 
     var actionIconStartAppearingOffset: Float = DEFAULT_ACTION_ICON_START_APPEARING_OFFSET
-    set (value){
-        if(value > triggerOffset){
-            field = triggerOffset
-        } else if(value <= MIN_ACTION_ICON_START_APPEARING_OFFSET){
-            field = MIN_ACTION_ICON_START_APPEARING_OFFSET
-        } else {
-            field = value
+        set(value) {
+            field = when {
+                value > triggerOffset -> {
+                    triggerOffset
+                }
+                value <= MIN_ACTION_ICON_START_APPEARING_OFFSET -> {
+                    MIN_ACTION_ICON_START_APPEARING_OFFSET
+                }
+                else -> {
+                    value
+                }
+            }
         }
-    }
 
     var vibrationDuration = DEFAULT_VIBRATION_DURATION
-    set(value) {
-        if(value > MAX_VIBRATION_DURATION){
-            field = MAX_VIBRATION_DURATION
-        } else if(value < MIN_VIBRATION_DURATION){
-            field = MIN_VIBRATION_DURATION
-        } else {
-            field = value
+        set(value) {
+            field = when {
+                value > MAX_VIBRATION_DURATION -> {
+                    MAX_VIBRATION_DURATION
+                }
+                value < MIN_VIBRATION_DURATION -> {
+                    MIN_VIBRATION_DURATION
+                }
+                else -> {
+                    value
+                }
+            }
         }
-    }
 
     var listener: ChatView.OnSwipeActionListener? = null
 
-    override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder): Int {
+    override fun getMovementFlags(
+        recyclerView: RecyclerView,
+        viewHolder: RecyclerView.ViewHolder
+    ): Int {
         return makeMovementFlags(0, ItemTouchHelper.LEFT)
     }
 
@@ -106,8 +110,11 @@ class SwipeToReplyCallback : ItemTouchHelper.Callback() {
         setTouchListener(recyclerView)
 
         if (dX < -triggerOffset) {
-            if(!isVibrationCompleted){
-                (recyclerView.context?.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator).vibrate(vibrationDuration)
+            if (!isVibrationCompleted) {
+                @Suppress("DEPRECATION")
+                (recyclerView.context?.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator).vibrate(
+                    vibrationDuration
+                )
                 isVibrationCompleted = true
             }
             makeActionIconOpaque(viewHolder.itemView.imageViewLeftSwipeActionIcon)
@@ -135,9 +142,10 @@ class SwipeToReplyCallback : ItemTouchHelper.Callback() {
             )
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private fun setTouchListener(recyclerView: RecyclerView) {
-        recyclerView.setOnTouchListener { v, event ->
-            if(event.action == MotionEvent.ACTION_UP && lastDXPosition <= -triggerOffset )
+        recyclerView.setOnTouchListener { _, event ->
+            if (event.action == MotionEvent.ACTION_UP && lastDXPosition <= -triggerOffset)
                 currentSwipingTextMessage?.let {
                     listener?.onAction(it)
                 }
@@ -146,7 +154,8 @@ class SwipeToReplyCallback : ItemTouchHelper.Callback() {
     }
 
     private fun setActionIconAlpha(dX: Float, icon: ImageView) {
-        val progress = (dX + actionIconStartAppearingOffset) / (triggerOffset - actionIconStartAppearingOffset)
+        val progress =
+            (dX + actionIconStartAppearingOffset) / (triggerOffset - actionIconStartAppearingOffset)
         val alpha = abs((255 * progress).toInt())
         icon.imageAlpha = alpha
     }
@@ -159,4 +168,16 @@ class SwipeToReplyCallback : ItemTouchHelper.Callback() {
         icon.imageAlpha = 0
     }
 
+    companion object {
+        private const val MAX_TRIGGER_OFFSET = 500f
+        private const val MIN_TRIGGER_OFFSET = 100f
+        private const val DEFAULT_TRIGGER_OFFSET = 200f
+
+        private const val MIN_ACTION_ICON_START_APPEARING_OFFSET = 0f
+        private const val DEFAULT_ACTION_ICON_START_APPEARING_OFFSET = 100f
+
+        private const val MIN_VIBRATION_DURATION = 0L
+        private const val MAX_VIBRATION_DURATION = 500L
+        private const val DEFAULT_VIBRATION_DURATION = 10L
+    }
 }

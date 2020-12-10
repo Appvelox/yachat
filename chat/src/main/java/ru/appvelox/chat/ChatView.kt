@@ -5,14 +5,17 @@ import android.util.AttributeSet
 import android.widget.Toast
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
+import ru.appvelox.chat.common.*
 import ru.appvelox.chat.model.Author
 import ru.appvelox.chat.model.Message
-import ru.appvelox.chat.model.TextMessage
-import java.util.*
 
+/**
+ * Component for displaying messages
+ */
 class ChatView(context: Context, attributeSet: AttributeSet) : RecyclerView(context, attributeSet) {
 
-    private var adapter: MessageAdapter = DefaultMessageAdapter(DefaultAppearance(context))
+    private var adapter: MessageAdapter =
+        CommonMessageAdapter(CommonAppearance(context), CommonBehaviour())
 
     fun setOnItemClickListener(listener: OnMessageClickListener?) {
         adapter.onItemClickListener = listener
@@ -24,6 +27,14 @@ class ChatView(context: Context, attributeSet: AttributeSet) : RecyclerView(cont
 
     fun setLoadMoreListener(listener: LoadMoreListener?) {
         adapter.loadMoreListener = listener
+    }
+
+    fun setOnMessageSelectedListener(listener: OnMessageSelectedListener?) {
+        adapter.onMessageSelectedListener = listener
+    }
+
+    fun setOnImageClickListener(listener: OnImageClickListener?) {
+        adapter.onImageClickListener = listener
     }
 
     init {
@@ -43,11 +54,13 @@ class ChatView(context: Context, attributeSet: AttributeSet) : RecyclerView(cont
         itemTouchHelper.attachToRecyclerView(this)
         swipeToReplyCallback.listener = object : OnSwipeActionListener {
             override fun onAction(textMessage: Message) {
-                Toast.makeText(context, "Reply on textMessage #${textMessage.getId()}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    context,
+                    "Reply on textMessage #${textMessage.id}",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
-
-        val typedArray = context.obtainStyledAttributes(attributeSet, R.styleable.ChatView)
 
         adapter.onReplyClickListener = object : OnReplyClickListener {
             override fun onReplyClick(textMessage: Message) {
@@ -56,47 +69,87 @@ class ChatView(context: Context, attributeSet: AttributeSet) : RecyclerView(cont
         }
     }
 
-    fun setSelectOnClick(b: Boolean) {
-        if (b)
-            adapter.onItemClickListener = object : OnMessageClickListener {
-                override fun onClick(textMessage: Message) {
+    fun setSelectOnClick(isSelectable: Boolean) {
+        fun onSelected() {
+            if (adapter.selectedMessageList.isNotEmpty()) {
+                adapter.onMessageSelectedListener?.onSelected(true)
+            } else {
+                adapter.onMessageSelectedListener?.onSelected(false)
+            }
+        }
+
+        if (isSelectable) {
+            adapter.onItemLongClickListener = object : OnMessageLongClickListener {
+                override fun onLongClick(textMessage: Message) {
                     adapter.changeMessageSelection(textMessage)
+                    onSelected()
                 }
             }
-        else {
+            adapter.onItemClickListener = object : OnMessageClickListener {
+                override fun onClick(textMessage: Message) {
+                    if (adapter.selectedMessageList.isNotEmpty()) {
+                        adapter.changeMessageSelection(textMessage)
+                        onSelected()
+                    }
+                }
+            }
+        } else {
+            adapter.onItemLongClickListener = null
             adapter.onItemClickListener = null
-            adapter.eraseSelectedMessages()
+            eraseSelectedMessages()
         }
     }
 
-    fun addMessage(textMessage: Message) {
-        adapter.addNewMessage(textMessage)
+    fun addMessage(message: Message) {
+        adapter.addNewMessage(message)
         layoutManager?.scrollToPosition(adapter.getLastMessageIndex())
     }
 
-    fun setCurrentUserId(id: Long) {
+    fun setCurrentUserId(id: String) {
         adapter.currentUserId = id
     }
 
-    fun navigateToMessage(textMessage: Message) {
-        val scrollTo = adapter.getPositionOfMessage(textMessage)
+    fun navigateToMessage(message: Message) {
+        val scrollTo = adapter.getPositionOfMessage(message)
         layoutManager?.scrollToPosition(scrollTo)
     }
 
-    interface LoadMoreListener {
-        fun requestPreviousMessages(count: Int, alreadyLoadedMessagesCount: Int, callback: LoadMoreCallback)
+    fun addOldMessages(messages: List<Message>) {
+        adapter.addOldMessages(messages)
     }
 
-    fun addOldMessages(textMessages: List<TextMessage>) {
-        adapter.addOldMessages(textMessages)
+    fun deleteMessage(message: Message) {
+        adapter.deleteMessage(message)
     }
 
-    fun deleteMessage(textMessage: TextMessage) {
-        adapter.deleteMessage(textMessage)
+    fun updateMessage(message: Message) {
+        adapter.updateMessage(message)
     }
 
-    fun updateMessage(textMessage: TextMessage) {
-        adapter.updateMessage(textMessage)
+    fun eraseSelectedMessages() {
+        adapter.eraseSelectedMessages()
+    }
+
+    fun deleteSelectedMessages() {
+        adapter.selectedMessageList.forEach {
+            deleteMessage(it)
+        }
+    }
+
+    fun getSelectedMessagesText(): String {
+        var text = ""
+        with(adapter.selectedMessageList) {
+            this.dropLast(1).forEach {
+                text += it.text + "\n"
+            }
+            text += this.last().text
+        }
+        return text
+    }
+
+    fun setDefaultAvatar(avatar: Int) {
+        adapter.appearance.defaultAvatar = avatar
+        adapter.notifyAppearanceChanged()
     }
 
     fun setMessageBackgroundCornerRadius(radius: Float) {
@@ -183,30 +236,27 @@ class ChatView(context: Context, attributeSet: AttributeSet) : RecyclerView(cont
         adapter.notifyDataSetChanged()
     }
 
-    fun addMessages(textMessages: MutableList<TextMessage>) {
-        adapter.addMessages(textMessages)
+    fun addMessages(messages: MutableList<Message>) {
+        adapter.addMessages(messages)
     }
 
-    fun setLayout(incomingMessageLayout: Int?, outgoingMessageLayout: Int?) {
-        val currentAppearance = adapter.appearance
-        val oldAdapter = adapter
-
-        if (incomingMessageLayout == null || outgoingMessageLayout == null)
-            adapter = DefaultMessageAdapter(currentAppearance)
-        else
-            adapter = MessageAdapter(currentAppearance)
-
-        oldAdapter.copyPropertiesTo(adapter)
-
-        setAdapter(adapter)
-
-        (adapter.appearance as DefaultAppearance).setMessageLayout(incomingMessageLayout, outgoingMessageLayout)
-        adapter.notifyAppearanceChanged()
+    fun deleteMessages() {
+        adapter.deleteMessages()
     }
 
-
+    /**
+     * Callback for showing more messages
+     */
     interface LoadMoreCallback {
         fun onResult(textMessages: List<Message>)
+    }
+
+    interface LoadMoreListener {
+        fun requestPreviousMessages(
+            count: Int,
+            alreadyLoadedMessagesCount: Int,
+            callback: LoadMoreCallback
+        )
     }
 
     interface OnMessageClickListener {
@@ -229,8 +279,11 @@ class ChatView(context: Context, attributeSet: AttributeSet) : RecyclerView(cont
         fun onClick(author: Author)
     }
 
-    interface DateFormatter {
-        fun formatDate(date: Date): String
-        fun formatTime(date: Date): String
+    interface OnMessageSelectedListener {
+        fun onSelected(selected: Boolean)
+    }
+
+    interface OnImageClickListener {
+        fun onClick(imageUrl: String)
     }
 }
