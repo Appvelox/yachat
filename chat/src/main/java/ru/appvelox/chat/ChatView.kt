@@ -17,6 +17,8 @@ class ChatView(context: Context, attributeSet: AttributeSet) : RecyclerView(cont
     private var adapter: MessageAdapter =
         CommonMessageAdapter(CommonAppearance(context), CommonBehaviour())
 
+    private val swipeToReplyCallback = SwipeToReplyCallback()
+
     fun setOnItemClickListener(listener: OnMessageClickListener?) {
         adapter.onItemClickListener = listener
     }
@@ -25,8 +27,20 @@ class ChatView(context: Context, attributeSet: AttributeSet) : RecyclerView(cont
         adapter.onItemLongClickListener = listener
     }
 
+    fun setOnReplyClickListener(listener: OnReplyClickListener?) {
+        adapter.onReplyClickListener = listener
+    }
+
+    fun setOnSwipeActionListener(listener: OnSwipeActionListener?) {
+        swipeToReplyCallback.listener = listener
+    }
+
     fun setLoadMoreListener(listener: LoadMoreListener?) {
         adapter.loadMoreListener = listener
+    }
+
+    fun setOnAvatarClickListener(listener: OnAvatarClickListener?) {
+        adapter.onAvatarClickListener = listener
     }
 
     fun setOnMessageSelectedListener(listener: OnMessageSelectedListener?) {
@@ -49,7 +63,6 @@ class ChatView(context: Context, attributeSet: AttributeSet) : RecyclerView(cont
                 }
             }
         })
-        val swipeToReplyCallback = SwipeToReplyCallback()
         val itemTouchHelper = ItemTouchHelper(swipeToReplyCallback)
         itemTouchHelper.attachToRecyclerView(this)
         swipeToReplyCallback.listener = object : OnSwipeActionListener {

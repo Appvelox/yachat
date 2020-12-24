@@ -49,6 +49,8 @@ open class MessageAdapter(
             field = value
         }
 
+    var onAvatarClickListener = behaviour.onAvatarClickListener
+
     var onMessageSelectedListener = behaviour.onMessageSelectedListener
 
     var onImageClickListener = behaviour.onImageClickListener
@@ -59,21 +61,6 @@ open class MessageAdapter(
     }
 
     val selectedMessageList = mutableListOf<Message>()
-
-    fun copyPropertiesTo(adapter: MessageAdapter) {
-        adapter.onReplyClickListener = onReplyClickListener
-        adapter.loadMoreListener = loadMoreListener
-        adapter.currentUserId = currentUserId
-        adapter.oldDataLoading = oldDataLoading
-        adapter.onItemClickListener = onItemClickListener
-        adapter.onItemLongClickListener = onItemLongClickListener
-
-        adapter.messageList.clear()
-        adapter.messageList.addAll(messageList)
-
-        adapter.selectedMessageList.clear()
-        adapter.selectedMessageList.addAll(selectedMessageList)
-    }
 
     fun addNewMessage(message: Message) {
         messageList.add(message)
@@ -176,6 +163,14 @@ open class MessageAdapter(
                 (message as TextMessage).repliedMessage?.let {
                     onReplyClickListener?.onReplyClick(it)
                 }
+            }
+        }
+
+        if (onAvatarClickListener == null) {
+            view.findViewById<ViewGroup>(R.id.avatarContainer).setOnClickListener(null)
+        } else {
+            view.findViewById<ViewGroup>(R.id.avatarContainer).setOnClickListener {
+                onAvatarClickListener?.onClick(message.author)
             }
         }
 
